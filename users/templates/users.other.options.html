@@ -1,0 +1,46 @@
+{% extends 'base.inicio.html' %}
+{% block titulo %}_-=SAPIC-Otras Opciones=-_{% endblock titulo %}
+  <!-- Tell the browser to be responsive to screen width -->
+{% block extracss %}
+{% load staticfiles %}
+{% endblock extracss %}
+{% block extrajs %}
+{% endblock extrajs %}
+{% block contenido %}
+<div class="contenido-sapic">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel-lateral-izq">
+            <br>
+                <div class="row">
+                    <a href="">
+                        <img width="80" height="70" src="{% static 'media/iconos/mis_datos_basicos.png' %}"><spam> Consultar Mis datos Basicos</spam>
+                    </a>
+                </div>
+                <br>
+                <div class="row">
+                    <a href="">
+                        <img width="80" height="70" src="{% static 'media/iconos/modificar_datos_basicos.png' %}"><spam> Modificar Mis datos Basicos</spam>
+                    </a>
+                </div>
+                <br>
+                <div class="row">
+                    <a href="">
+                        <img width="80" height="70" src="{% static 'media/iconos/cambiar_pass.png' %}"><spam> Cambiar Contraseña</spam>
+                    </a>
+                </div>
+                <br>
+                <div class="row">
+                    <a href="">
+                        <img width="80" height="70" src="{% static 'media/iconos/salir.png' %}"><spam> Salir del sistema</spam>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="contenido">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

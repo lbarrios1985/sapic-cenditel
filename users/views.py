@@ -120,7 +120,7 @@ class LoginView(FormView):
 
         return super(LoginView, self).form_valid(form)
 
-class PasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+class PasswordChangeView(LoginRequeridoPerAuth, SuccessMessageMixin, PasswordChangeView):
     """!
     Cambiar la Contraseña
 
@@ -133,6 +133,7 @@ class PasswordChangeView(SuccessMessageMixin, PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = '/inicio/'
     success_message = "Cambio de contraseña con exito"
+    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
 
 
 class LogOutView(RedirectView):

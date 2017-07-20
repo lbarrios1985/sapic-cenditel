@@ -8,6 +8,7 @@ Modelo que construye el modelo de datos de las utilidades
 @version 1.0.0
 """
 from django.db import models
+from django.contrib.gis.db import models
 
 
 class Pais(models.Model):
@@ -20,6 +21,7 @@ class Pais(models.Model):
     @version 1.0.0
     """
     nombre = models.CharField(max_length=50)
+    location = models.PointField(help_text="Representa (Latitud, Longitud)")
 
     class Meta:
         ordering = ('nombre',)
@@ -42,6 +44,8 @@ class Estado(models.Model):
     """
     nombre = models.CharField(max_length=50)
     pais = models.ForeignKey(Pais)
+    location = models.PointField(help_text="Representa (Latitud, Longitud)")
+
 
     class Meta:
         ordering = ('nombre',)
@@ -64,6 +68,7 @@ class Municipio(models.Model):
     """
     nombre = models.CharField(max_length=50)
     estado = models.ForeignKey(Estado)
+    location = models.PointField(help_text="Representa (Latitud, Longitud)")
 
     class Meta:
         ordering = ('nombre',)
@@ -85,6 +90,7 @@ class Parroquia(models.Model):
     """
     nombre = models.CharField(max_length=50)
     municipio = models.ForeignKey(Municipio)
+    location = models.PointField(help_text="Representa (Latitud, Longitud)")
 
     class Meta:
         ordering = ('nombre',)
@@ -127,6 +133,7 @@ class Nacionalidad(models.Model):
     """
     fk_pais = models.ForeignKey(Pais, verbose_name='Pais')
     tipo_nacionalidades = models.CharField(max_length=128)
+    abreviatura = models.CharField(max_length=3)
 
     class Meta:
         ordering = ('tipo_nacionalidades',)
@@ -316,6 +323,14 @@ class UnidadesConsejoComunal(models.Model):
 
 
 class ComiteUnidadEjecutiva(models.Model):
+    """!
+    Clase que contiene el modelo de datos para Los Comites de la unidad ejecutiva
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 25-05-2017
+    @version 1.0.0
+    """
     fk_unidad = models.ForeignKey(UnidadesConsejoComunal, verbose_name="Unidad Ejecutiva")
     tipo = models.CharField(max_length=100)
 
@@ -323,6 +338,28 @@ class ComiteUnidadEjecutiva(models.Model):
         ordering = ('tipo',)
         verbose_name = 'Comite del Consejo Comunal'
         verbose_name_plural = 'Comites del consjo comunal'
+
+    def __str__(self):
+        return self.tipo
+
+
+class TipoOrganizacion(models.Model):
+    """!
+    Clase que contiene el modelo de datos Para los tipos de organizaciones
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 20-07-2017
+    @version 1.0.0
+    """
+    tipo = models.CharField(max_length=100, unique=True)
+    abreviatura = models.CharField(max_length=4, unique=True)
+    descripcion = models.TextField()
+
+    class Meta:
+        ordering = ('tipo',)
+        verbose_name = 'Tipo de Organizacion'
+        verbose_name_plural = 'Tipos de Organizaciones'
 
     def __str__(self):
         return self.tipo

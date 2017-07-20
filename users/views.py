@@ -28,6 +28,7 @@ from django.contrib.auth.mixins import (
 )
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import PasswordChangeView
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import (
     reverse_lazy, reverse
@@ -47,10 +48,10 @@ from utils.views import LoginRequeridoPerAuth
 
 from .forms import (
     FormularioLogin, FormularioUpdate, FormularioAdminRegPerfil,
-    FormularioAdminRegistro
+    FormularioAdminRegistro, PasswordChangeForm
 )
-
 from .models import UserProfile
+
 
 
 
@@ -118,6 +119,20 @@ class LoginView(FormView):
                                                  y vuelve a intertar')
 
         return super(LoginView, self).form_valid(form)
+
+class PasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+    """!
+    Cambiar la Contraseña
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 20-07-2017
+    @version 1.0.0
+    """
+    template_name = 'users.change.pass.html'
+    form_class = PasswordChangeForm
+    success_url = '/inicio/'
+    success_message = "Cambio de contraseña con exito"
 
 
 class LogOutView(RedirectView):

@@ -4,10 +4,9 @@ from django.contrib.auth.views import (
     password_reset, password_reset_done,
     )
 
-
 from .views import *
 from .ajax import *
-from .forms import PasswordResetForm
+from .forms import PasswordResetForm, PasswordChangeForm
 
 urlpatterns = [
     # Login and Logut all users
@@ -26,6 +25,8 @@ urlpatterns = [
 
     # Options Users, for all users
     url(r'^otras-opciones/$', OthersOptionsView.as_view(), name="options"),
+    url(r'^cambiar-password/$', PasswordChangeView.as_view(),
+     name="change_password"),
 
     # Urls Access Administradores
     url(r'^lista-usuarios/$', ListUsersView.as_view(), name="lista_users"),

@@ -61,9 +61,17 @@ Para instalar la apliacacion en modo desarrollo debera seguir los siguientes pas
 
 5-) Crear base de datos y Migrar los modelos:
 
-    El manejador de base de datos que usa el proyecto es postgres, es necesario, crear la base de datos desde postgres de la siguiente manera si se usa la consola de postgres:
+    El manejador de base de datos que usa el proyecto es postgres, es necesario, tener instalado postgres y crear la base de datos desde postgres de la siguiente manera si se usa la consola de postgres, ademas se debe instalar postgis para el uso de una base de datos georeferenciada:
+
+    como super usuario instalar postgis
+    # aptitude install postgis
+    # aptitude install postgresql-x.x-postgis-x.x
+
 
     postgres=# CREATE DATABASE sapic OWNER=postgres ENCODING='UTF−8';
+    postgres=# \q
+    $ psql sapic
+    sapic=# CREATE EXTENSION postgis;
 
     Para migrar los modelos del proyecto se debe usar el siguiente comando:
 

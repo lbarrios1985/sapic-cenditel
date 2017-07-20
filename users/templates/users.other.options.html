@@ -25,13 +25,13 @@
                 </div>
                 <br>
                 <div class="row">
-                    <a href="">
+                    <a href="{% url 'users:change_password' %}">
                         <img width="80" height="70" src="{% static 'media/iconos/cambiar_pass.png' %}"><spam> Cambiar Contraseña</spam>
                     </a>
                 </div>
                 <br>
                 <div class="row">
-                    <a href="">
+                    <a href="{% url 'users:logout' %}">
                         <img width="80" height="70" src="{% static 'media/iconos/salir.png' %}"><spam> Salir del sistema</spam>
                     </a>
                 </div>
@@ -39,6 +39,8 @@
         </div>
         <div class="col-md-9">
             <div id="contenido">
+            {% block contenido_principal %}
+            {% endblock contenido_principal %}
             </div>
         </div>
     </div>

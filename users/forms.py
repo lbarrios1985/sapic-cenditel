@@ -13,7 +13,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import (
     UserCreationForm, PasswordResetForm,
-    SetPasswordForm
+    SetPasswordForm, PasswordChangeForm
     )
 from django.forms.fields import (
     CharField, BooleanField
@@ -190,3 +190,17 @@ class FormularioAdminRegPerfil(ModelForm):
                                                       'placeholder':'Documento de identidad'})
         self.fields['id_perfil'].label= 'Cargo que tiene'
         self.fields['id_perfil'].required=True
+
+
+class PasswordChangeForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control',
+                                                  'placeholder': 'Contraseña Antigua'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control',
+                                                  'placeholder': 'Ingresa la nueva contraseña'})
+
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control',
+                                                  'placeholder': 'Repite la nueva contraseña'})

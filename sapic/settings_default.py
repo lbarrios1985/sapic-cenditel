@@ -32,6 +32,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'captcha',
 ]
 
@@ -88,10 +89,10 @@ WSGI_APPLICATION = 'sapic.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sapic',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis', # Se usa postgis para el uso De GeoDjango
+        'NAME': 'nombre_base_datos',
         'USER': 'nombre_usuario',
-        'PASSWORD': 'pass',
+        'PASSWORD': 'passw',
         'HOST': 'localhost',
         'PORT': '5432',
         'ATOMIC_REQUESTS': True, # Crea transacciones en cada peticion de la vista

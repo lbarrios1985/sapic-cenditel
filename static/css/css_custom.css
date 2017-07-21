@@ -53,7 +53,7 @@
     padding-right: 2%;
     //width: 320px;
     min-height: 500px;
-    //height: auto;
+    height: auto;
     background-color: #FFF;
     border-radius: 10px;
     color: #0085A8;
@@ -71,7 +71,7 @@
     padding-right: 10%;
     //width: 320px;
     min-height: 500px;
-    //height: auto;
+    height: auto;
     background-color: #F4F4F4;
     border-radius: 10px;
     color: #D40000;

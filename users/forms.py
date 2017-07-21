@@ -183,12 +183,13 @@ class FormularioAdminRegPerfil(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(FormularioAdminRegPerfil, self).__init__(*args, **kwargs)
+        self.fields['fk_tipo_documento'].empty_label = 'Seleccione el Tipo de Documento'
         self.fields['fk_tipo_documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['fk_tipo_documento'].label= 'Tipo de Documento'
         self.fields['fk_tipo_documento'].required=True
         self.fields['id_perfil'].widget.attrs.update({'class': 'form-control',
                                                       'placeholder':'Documento de identidad'})
-        self.fields['id_perfil'].label= 'Cargo que tiene'
+        self.fields['id_perfil'].label= 'Documento de Identidad'
         self.fields['id_perfil'].required=True
 
 

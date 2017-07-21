@@ -1,0 +1,67 @@
+{% extends 'users.other.options.html' %}
+{% block titulo %}_-=SAPIC-Mis datos Basicos=-_{% endblock titulo %}
+
+{% block contenido_principal %}
+        <div class="panel-sapic">
+            <div class="page-header">
+                <h2>Datos Basicos</h2>
+            </div>
+            <h4>Datos Personales</h4>
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Nombres y Apellidos</label>
+                </div>
+                <div class="col-md-3">
+                    {{ upUser.fk_user.first_name }} {{ upUser.fk_user.last_name }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Documento de Identidad </label>
+                </div>
+                <div class="col-md-3">
+                    {{ upUser.fk_tipo_documento }}-{{ upUser.id_perfil }}
+                </div>
+            </div>
+            <hr>
+            <br>
+            <h4>Datos De la cuenta</h4>
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Nombre de usuario </label>
+                </div>
+                <div class="col-md-3">
+                    {{ upUser.fk_user.username }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Correo Electronico </label>
+                </div>
+                <div class="col-md-3">
+                    {{ upUser.fk_user.email }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Fecha de Registro </label>
+                </div>
+                <div class="col-md-3">
+                    {{ upUser.fk_user.date_joined }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Grupo de Usuario </label>
+                </div>
+                <div class="col-md-3">
+                    {{ request.session.grupos }}
+                </div>
+            </div>
+            <hr>
+        </div>
+{% endblock contenido_principal %}

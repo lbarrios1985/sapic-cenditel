@@ -86,6 +86,10 @@
     color: #D40000;
 }
 
+.panel-sapic hr{
+  border-top: 0.5px solid #A76868;
+}
+
 .panel-sapic p{
     color: #000000;
 }
@@ -269,7 +273,7 @@ hr {
 
 
 .dropdown-menu{
-  background-color: rgba(158, 3, 3, 0.13); 
+  background-color: #E89797; 
 }
 
 .col-lg-3 a{

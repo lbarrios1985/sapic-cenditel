@@ -27,6 +27,10 @@ urlpatterns = [
     url(r'^otras-opciones/$', OthersOptionsView.as_view(), name="options"),
     url(r'^cambiar-password/$', PasswordChangeView.as_view(),
      name="change_password"),
+    url(r'^mis-datos/(?P<pk>\d+)/$', DataDetailView.as_view(),
+     name="data_detail"),
+    url(r'^modificar-mis-datos/(?P<pk>\d+)/$', UpdatePerfil.as_view(),
+     name="update_perfil"),
 
     # Urls Access Administradores
     url(r'^lista-usuarios/$', ListUsersView.as_view(), name="lista_users"),

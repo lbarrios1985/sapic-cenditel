@@ -1,10 +1,15 @@
 {% extends 'base.inicio.html' %}
+{% load staticfiles %}
 {% block titulo %}_-=SAPIC-Otras Opciones=-_{% endblock titulo %}
   <!-- Tell the browser to be responsive to screen width -->
 {% block extracss %}
 {% load staticfiles %}
 {% endblock extracss %}
 {% block extrajs %}
+    <link type="text/css" rel="stylesheet" href="{% static 'jquery-entropizer-master/dist/css/jquery-entropizer.min.css' %}" />
+    <script type="text/javascript" src="{% static 'jquery-entropizer-master/lib/entropizer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery-entropizer-master/dist/js/jquery-entropizer.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'users/user_register.js' %}"></script>
 {% endblock extrajs %}
 {% block contenido %}
 <div class="contenido-sapic">
@@ -13,13 +18,13 @@
             <div class="panel-lateral-izq">
             <br>
                 <div class="row">
-                    <a href="">
+                    <a href="{% url 'users:data_detail' request.user.pk %}">
                         <img width="80" height="70" src="{% static 'media/iconos/mis_datos_basicos.png' %}"><spam> Consultar Mis datos Basicos</spam>
                     </a>
                 </div>
                 <br>
                 <div class="row">
-                    <a href="">
+                    <a href="{% url 'users:update_perfil' request.user.pk %}">
                         <img width="80" height="70" src="{% static 'media/iconos/modificar_datos_basicos.png' %}"><spam> Modificar Mis datos Basicos</spam>
                     </a>
                 </div>

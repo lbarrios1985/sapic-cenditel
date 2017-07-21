@@ -37,7 +37,9 @@ from django.core.urlresolvers import (
 from django.shortcuts import (
     render, redirect, get_object_or_404
 )
-from django.views.generic import TemplateView
+from django.views.generic import (
+    TemplateView, ListView
+)
 from django.views.generic.base import RedirectView
 from django.views.generic.edit import (
     FormView, UpdateView
@@ -120,7 +122,8 @@ class LoginView(FormView):
 
         return super(LoginView, self).form_valid(form)
 
-class PasswordChangeView(LoginRequeridoPerAuth, SuccessMessageMixin, PasswordChangeView):
+class PasswordChangeView(LoginRequeridoPerAuth, SuccessMessageMixin,
+                         PasswordChangeView):
     """!
     Cambiar la Contraseña
 
@@ -222,6 +225,34 @@ class RegisterView(LoginRequeridoPerAuth, MultiModelFormView):
         messages.success(self.request, "Usuario %s creado con exito\
                                        " % (str(usuario)))
         return super(RegisterView, self).forms_valid(forms)
+
+
+
+class DataDetailView(LoginRequeridoPerAuth, ListView):
+    """!
+    Consultar los datos basicos del usuario
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 21-07-2017
+    @version 1.0.0
+    """
+    template_name = 'users.data.detail.html'
+    model = UserProfile
+    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+
+    def get_context_data(self, **kwargs):
+        """
+        Carga el formulario en la vista,para registrar usuarios
+        @return: El contexto con los objectos para la vista
+        """
+        context = super(DataDetailView, self).get_context_data(**kwargs)
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        context['upUser'] = record
+        return context
 
 
 
@@ -338,9 +369,68 @@ class ModalsPerfil(LoginRequeridoPerAuth, MultiModelFormView):
         self.record_id = self.kwargs.get('pk', None)
         if self.record_id is not None:
             objeto = get_object_or_404(User, pk=self.record_id)
-            update_usuario = FormularioUpdate(self.request.POST, instance=objeto)
-            update_perfil = FormularioAdminRegPerfil(self.request.POST, instance=objeto)
-
             messages.success(self.request, "Usuario %s Actualizado con exito\
                                            " % (str(objeto.username)))
         return super(ModalsPerfil, self).forms_valid(forms)
+
+
+class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
+    """!
+    Actualizar el perfil del usuario
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 31-01-2017
+    @version 1.0.0
+    """
+    model = UserProfile
+    form_classes = {
+      'user': FormularioUpdate,
+      'user_perfil': FormularioAdminRegPerfil,
+    }
+    template_name = 'users.update.perfil.html'
+    success_url = reverse_lazy('users:options')
+    success_message = 'Usuario Actualizado con exito'
+    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+    record_id = None
+
+
+    def get_context_data(self, **kwargs):
+        """
+        Carga el formulario en la vista,para registrar usuarios
+        @return: El contexto con los objectos para la vista
+        """
+        context = super(UpdatePerfil, self).get_context_data(**kwargs)
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        context['upUser'] = record
+        return context
+
+    def get_objects(self, **kwargs):
+        """
+        Carga el formulario en la vista,para actualizar el perfil del  usuario
+        @return: El contexto con los objectos para la vista
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        return {
+          'user_perfil': record,
+          'user': record.fk_user if record else None}
+
+    def forms_valid(self, forms, **kwargs):
+        """
+        Valida el formulario de registro del perfil de usuario
+        @return: Dirige con un mensaje de exito a el home
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        if self.record_id is not None:
+            objeto = get_object_or_404(User, pk=self.record_id)
+            messages.success(self.request, "Usuario %s Actualizado con exito\
+                                           " % (str(objeto.username)))
+        return super(UpdatePerfil, self).forms_valid(forms)

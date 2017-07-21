@@ -50,7 +50,7 @@ from utils.views import LoginRequeridoPerAuth
 
 from .forms import (
     FormularioLogin, FormularioUpdate, FormularioAdminRegPerfil,
-    FormularioAdminRegistro, PasswordChangeForm
+    FormularioAdminRegistro, PasswordChangeForm, FormularioAdminUpdate
 )
 from .models import UserProfile
 
@@ -320,12 +320,11 @@ class ModalsPerfil(LoginRequeridoPerAuth, MultiModelFormView):
     """
     model = UserProfile
     form_classes = {
-      'user': FormularioUpdate,
+      'user': FormularioAdminUpdate,
       'user_perfil': FormularioAdminRegPerfil,
     }
     template_name = 'users.modals.perfil.html'
     success_url = reverse_lazy('users:lista_users')
-    success_message = 'Usuario Actualizado con exito'
     group_required = [u"Administradores"]
     record_id = None
 
@@ -390,7 +389,6 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
     }
     template_name = 'users.update.perfil.html'
     success_url = reverse_lazy('users:options')
-    success_message = 'Usuario Actualizado con exito'
     group_required = [u"Administradores", u"Voceros", u"Integrantes"]
     record_id = None
 
@@ -429,8 +427,8 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
         @return: Dirige con un mensaje de exito a el home
         """
         self.record_id = self.kwargs.get('pk', None)
+        objeto = get_object_or_404(User, pk=self.record_id)
         if self.record_id is not None:
-            objeto = get_object_or_404(User, pk=self.record_id)
             messages.success(self.request, "Usuario %s Actualizado con exito\
                                            " % (str(objeto.username)))
-        return super(UpdatePerfil, self).forms_valid(forms)
+            return super(UpdatePerfil, self).forms_valid(forms)

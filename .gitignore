@@ -9,6 +9,8 @@ explicacion_situacional/__pycache__
 explicacion_situacional/migrations/
 plan_integral/__pycache__
 plan_integral/migrations/
+organizaciones/__pycache__
+organizaciones/migrations/
 sapic/__pycache__
 sapic/settings.py
 users/__pycache__

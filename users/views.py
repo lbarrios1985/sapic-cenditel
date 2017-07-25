@@ -240,6 +240,11 @@ class DataDetailView(LoginRequeridoPerAuth, ListView):
     model = UserProfile
     group_required = [u"Administradores", u"Voceros", u"Integrantes"]
 
+    def dispatch(self, request, *args, **kwargs):
+        if int(request.user.pk) != int(self.kwargs.get('pk', None)):
+            return redirect('utils:403error')
+        return super(DataDetailView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         """
         Carga el formulario en la vista,para registrar usuarios

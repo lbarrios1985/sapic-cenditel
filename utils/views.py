@@ -7,18 +7,111 @@ Vista que controla los procesos de las utilidades de la pltaforma
 @date 29-05-2017
 @version 1.0.0
 """
-
+import json
 from django.contrib import messages
 from django.contrib.auth.mixins import (
     PermissionRequiredMixin, LoginRequiredMixin
 )
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse
 from django.shortcuts import (
     redirect, render
 )
 from django.views.generic import TemplateView
 from braces.views import GroupRequiredMixin
 
+from .models import *
 
+
+def obtenerEstados():
+    """
+    Función que permite obtener la lista de estados
+
+    El método hace una lista consultando el modelo Estado
+
+    @return: Lista de estados
+    """
+    try:
+
+        if Estado.objects.exists():
+            consulta = Estado.objects.all().values('id', 'nombre')
+        else:
+            consulta = [{'id': '', 'nombre': ''}]
+    except:
+        consulta = [{'id': '', 'nombre': ''}]
+
+    return consulta
+
+def obtenerMunicipios(request):
+    """
+    Función que permite obtener la lista de municipios asociados a un estado
+
+    El método hace un llamado al modelo para realizar una consulta
+
+    @param id_estado: Identificador del estado
+    @type id_estado: entero
+
+    @return: Lista de municipios asociados al estado
+    """
+    try:
+        if Municipio.objects.exists():
+            id_estado = request.GET.get('id_estado')
+            municipios = Municipio.objects.filter(estado_id=id_estado).values('id', 'nombre')
+            data = json.dumps(list(municipios), cls=DjangoJSONEncoder)
+            print(data)
+        else:
+            data = {}
+    except:
+        data = {}
+        pass
+
+    return HttpResponse(data, content_type='application/json')
+
+
+def obtenerParroquias(request):
+    """
+    Función que permite obtener la lista de municipios asociados a un estado
+
+    El método hace un llamado al modelo para realizar una consulta
+
+    @param id_estado: Identificador del estado
+    @type id_estado: entero
+
+    @return: Lista de municipios asociados al estado
+    """
+    try:
+        if Municipio.objects.exists():
+            id_municipio = request.GET.get('id_municipio')
+            municipios = Parroquia.objects.filter(municipio_id=id_municipio).values('id', 'nombre')
+            data = json.dumps(list(municipios), cls=DjangoJSONEncoder)
+        else:
+            data = {}
+    except:
+        data = {}
+        pass
+
+    return HttpResponse(data, content_type='application/json')
+
+def listMunicipios():
+    """
+    Función que permite obtener el municipio asociado a una parroquia
+
+    El método hace un llamado a un servicio REST de la aplicación comun
+
+    @param id_parroquia: Identificador de la parroquia
+    @type id_parroquia: entero
+
+    @return: El municipio asociado a la parroquia
+    """
+    try:
+        if Municipio.objects.exists():
+            consulta = Municipio.objects.all().values('id', 'nombre')
+        else:
+            consulta = [{'id': '', 'nombre': ''}]
+    except:
+        consulta = [{'id': '', 'nombre': ''}]
+
+    return consulta
 
 class LoginRequeridoPerAuth(LoginRequiredMixin, GroupRequiredMixin):
     """!

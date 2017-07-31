@@ -38,4 +38,5 @@ urlpatterns = [
         {'template_name': 'base.pass.done.html'}),
     url(r'^', include('utils.urls', namespace="utils")),
     url(r'^', include('users.urls', namespace="users")),
+    url(r'^', include('organizaciones.urls', namespace="organizaciones")),
 ]

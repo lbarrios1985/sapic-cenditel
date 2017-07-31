@@ -84,7 +84,14 @@ class PasswordResetForm(PasswordResetForm):
 
 
 class SetPasswordForm(SetPasswordForm):
+    """!
+    Clase que permite sobrescribir el formulario para ingresar la nueva contraseña
 
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
     def __init__(self, *args, **kwargs):
         super(SetPasswordForm, self).__init__(*args, **kwargs)
 
@@ -96,6 +103,14 @@ class SetPasswordForm(SetPasswordForm):
 
 
 class FormularioUpdate(ModelForm):
+    """!
+    Clase que permite crear el formulario para actualizar el usuario
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
@@ -115,6 +130,14 @@ class FormularioUpdate(ModelForm):
 
 
 class FormularioAdminUpdate(ModelForm):
+    """!
+    Clase que permite crear el formulario para actualizar el usuario por el administrador
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
 
     class Meta:
         model = User
@@ -141,6 +164,14 @@ class FormularioAdminUpdate(ModelForm):
 
 
 class FormularioAdminRegistro(UserCreationForm):
+    """!
+    Clase que permite crear el formulario para crear usuario por el administrador
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
 
     class Meta:
         model = User
@@ -196,6 +227,14 @@ class FormularioAdminRegistro(UserCreationForm):
 
 
 class FormularioAdminRegPerfil(ModelForm):
+    """!
+    Clase que permite crear el formulario para actualizar usuario por el administrador
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
 
     class Meta:
         model = UserProfile
@@ -214,7 +253,14 @@ class FormularioAdminRegPerfil(ModelForm):
 
 
 class PasswordChangeForm(PasswordChangeForm):
+    """!
+    Clase que sobrescribir el formulario para cambiar la contraseña
 
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
 

@@ -283,3 +283,7 @@ hr {
 .col-lg-3 a:hover{
   color: #33b7a5;
 }
+
+.alert {
+  margin-bottom: -45px;
+}

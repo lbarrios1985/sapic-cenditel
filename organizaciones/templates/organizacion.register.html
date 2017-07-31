@@ -1,0 +1,104 @@
+{% extends "base.inicio.html" %}
+{% block titulo %}_-=SAPIC-Registrar Organizacion Social=-_{% endblock titulo %}
+{% block extracss %}
+{% load staticfiles %}
+    <link href="{% static 'bootstrap-3/css/bootstrap-toggle.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css' %}">
+{% endblock extracss %}
+{% block extrajs %}
+    <script src="{% static 'bootstrap-3/js/bootstrap-toggle.min.js'%}"></script>
+    <script src="{% static 'plugins/datepicker/moment-with-locales.js' %}"></script>
+    <!-- bootstrap datepicker -->
+    <script src="{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $('#municipio, #parroquia').hide()
+            $('#id_estado').change(function(event){
+                var url_mun = "{% url 'utils:obtener_municipios' %}"
+                cargar_municipios($(this).val(), url_mun);
+            })
+
+            $('#id_municipio').change(function(event){
+                var url_parr = "{% url 'utils:obtener_parroquias' %}"
+                cargar_parroquias($(this).val(), url_parr);
+                })
+        })
+    </script>
+    <script type="text/javascript" src="{% static 'utils/list_ubicacion.js' %}"></script>
+    <script type="text/javascript" src="{% static 'organizaciones/registro_organizaciones.js' %}"></script>
+{% endblock extrajs %}
+{% block contenido %}
+<div class="contenido-sapic">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel-sapic">
+      <form id="form_project" method="post">
+          {% csrf_token %}
+        <div class="row">
+            <div class="col-xs-6">
+                {{forms.organizacion_social.fk_tipo_organizacion.label}}
+                {{forms.organizacion_social.fk_tipo_organizacion}}
+            </div>
+            <div class="col-xs-6">
+                {{forms.organizacion_social.codigo.label}}
+                {{forms.organizacion_social.codigo}}
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-xs-6">
+                {{forms.organizacion_social.rif.label}}
+                {{forms.organizacion_social.rif}}
+            </div>
+            <div class="col-xs-6">
+                {{forms.organizacion_social.situr.label}}
+                {{forms.organizacion_social.situr}}
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-xs-6">
+                {{forms.organizacion_social.nombre.label}}
+                {{forms.organizacion_social.nombre}}
+            </div>
+            <div class="col-xs-6">
+                {{forms.organizacion_social.email.label}}
+                {{forms.organizacion_social.email}}
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-xs-6">
+                {{forms.organizacion_social.fecha_conformacion.label}}
+                {{forms.organizacion_social.fecha_conformacion}}
+            </div>
+            <div class="col-xs-6">
+                {{forms.organizacion_social.sector.label}}
+                {{forms.organizacion_social.sector}}
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-xs-4">
+                {{forms.organizacion_social.estado.label}}
+                {{forms.organizacion_social.estado}}
+            </div>
+            <div class="col-xs-4" id="municipio">
+                {{forms.organizacion_social.municipio.label}}
+                {{forms.organizacion_social.municipio}}
+            </div>
+            <div class="col-xs-4" id="parroquia">
+                {{forms.organizacion_social.localidad.label}}
+                {{forms.organizacion_social.localidad}}
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-xs-12">
+                {{forms.organizacion_social.activa.label}}
+                {{forms.organizacion_social.activa}}
+            </div>
+        </div><br>
+        <button type="submit" class="btn btn-danger btn-block btn-fla">Registrar Organización</button>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock contenido %}
+

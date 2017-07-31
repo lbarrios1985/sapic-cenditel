@@ -3,4 +3,7 @@ from django.conf.urls import url
 
 from .views import *
 
-urlpatterns = []
+urlpatterns = [
+    url(r'^registrar-organizacion/$', RegisterOrgView.as_view(),
+        name="registrar_organizacion"),
+]

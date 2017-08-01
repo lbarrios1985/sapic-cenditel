@@ -228,7 +228,7 @@ class Vocero(models.Model):
     documento_identidad = models.PositiveIntegerField(unique=True)
     sector = models.TextField(blank=True, null=True)
     casa_edificio_calle = models.TextField(blank=True, null=True)
-    localidad = models.ForeignKey(Parroquia)
+    localidad = models.ForeignKey(Parroquia, null=True)
     activo = models.BooleanField(default=True)
 
     class Meta:

@@ -33,7 +33,9 @@ from .forms import (
 )
 from multi_form_view import MultiModelFormView
 
-from .models import OrganizacionSocial
+from .models import (
+    OrganizacionSocial, Vocero
+)
 
 from utils.views import LoginRequeridoPerAuth
 
@@ -50,6 +52,7 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
     template_name = "organizacion.register.html"
     form_classes = {
       'organizacion_social': FormularioRegisterOrgSocial,
+      'voceros': FormsetObj,
     }
     success_url = reverse_lazy('utils:inicio')
     record_id = None
@@ -61,8 +64,13 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
             record = OrganizacionSocial.objects.get(pk=self.record_id)
         except OrganizacionSocial.DoesNotExist:
             record = None
+        try:
+            record = Vocero.objects.get(pk=self.record_id)
+        except Vocero.DoesNotExist:
+            record = None
         return {
           'organizacion_social': record,
+          'voceros': record,
         }
 
     def forms_valid(self, forms, **kwargs):

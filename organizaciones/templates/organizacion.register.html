@@ -7,10 +7,20 @@
 {% endblock extracss %}
 {% block extrajs %}
     <script src="{% static 'bootstrap-3/js/bootstrap-toggle.min.js'%}"></script>
+    <script src="{% static 'js/formset.js'%}"></script>
     <script src="{% static 'plugins/datepicker/moment-with-locales.js' %}"></script>
     <!-- bootstrap datepicker -->
     <script src="{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
     <script type="text/javascript">
+        $(function() {
+            $('#id_voceros tbody tr').formset({
+            // For inline formsets, be sure to set the prefix, as the default prefix
+            // ('form') isn't correct.
+            // Django appears to generate the prefix from the lowercase plural
+            // name of the related model, with camel-case converted to underscores.
+            prefix: 'voceros_set'
+            })
+        })
         $(document).ready(function ()
         {
             $('#municipio, #parroquia').hide()
@@ -23,6 +33,16 @@
                 var url_parr = "{% url 'utils:obtener_parroquias' %}"
                 cargar_parroquias($(this).val(), url_parr);
                 })
+            var eliminar = "<i class='fa fa-remove' title='Eliminar Fila'>"
+            $('.delete-row').text('');
+            $('.delete-row').append(eliminar);
+            $('.add-row').click(function(event) {
+              $('.delete-row').text("");
+              $('.delete-row').append(eliminar);
+            });
+            var agregar  = "<i class='fa-plus-circle' title='Agregar'>";
+            $('.add-row').html("<b>Agregar</b>");
+            $('.add-row').append(agregar);
         })
     </script>
     <script type="text/javascript" src="{% static 'utils/list_ubicacion.js' %}"></script>
@@ -95,6 +115,42 @@
                 {{forms.organizacion_social.activa}}
             </div>
         </div><br>
+        <div class="row">
+            <div class="form-group col-xs-12 has-feedback">
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">
+                    Voceros
+                  </h3>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="id_voceros">
+                        <thead>
+                          <tr>
+                              <th scope="col">Documento de Identidad</th>
+                              <th scope="col">Nombres y Apellidos</th>
+                              <th scope="col">Se encuentra Activo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {{ forms.voceros.management_form }}
+                            {% for form in forms.voceros  %}
+                            <tr id="{{ form.prefix }}-row">
+                              <td>
+                                <div class="col-md-2">
+                              {{forms.voceros.fk_tipo_documento}}-
+                              </div>{{forms.voceros.documento_identidad}}</td>
+                              <td>{{forms.voceros.nombres}} {{forms.voceros.apellidos}}</td>
+                              <td>{{forms.voceros.activo.label}}: {{forms.voceros.activo}}</td>
+                              <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
         <button type="submit" class="btn btn-danger btn-block btn-fla">Registrar Organización</button>
         </form>
       </div>

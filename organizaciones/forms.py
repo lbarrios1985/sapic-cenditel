@@ -91,6 +91,7 @@ class FormularioVocero(ModelForm):
         self.fields['fk_tipo_documento'].widget.attrs.update(
                                             {'class': 'form-control'})
         self.fields['fk_tipo_documento'].empty_label = 'Seleccione el Tipo De Documento'
+        self.fields['fk_tipo_documento'].label = "Tipo de Documento"
         self.fields['nombres'].widget.attrs.update(
                                             {'class': 'form-control',
                                              'placeholder':
@@ -110,4 +111,4 @@ class FormularioVocero(ModelForm):
                                                    'checked': 'checked'})
         self.fields['activo'].label = "¿El vocero se encuentra Activo?"
 
-FormsetObj = modelform_factory(Vocero, form=FormularioVocero, fields=('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo'))
+FormsetObj = modelformset_factory(Vocero, formset=FormularioVocero, fields=('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo'), extra=0)

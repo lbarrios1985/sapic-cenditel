@@ -207,9 +207,12 @@ class FormularioAdminRegistro(UserCreationForm):
                                                   'placeholder': 'Email'})
         self.fields['email'].required = True
         self.fields['is_staff'].label = 'Es Administrador?'
-        self.fields['is_staff'].widget.attrs.update({'class': 'form-control'})
+        self.fields['is_staff'].widget.attrs.update({'class': 'form-control','data-toggle': 'toggle','data-on': 'Si',
+                                                   'data-off': 'No'})
         self.fields['is_active'].label = 'Estara Activo?'
-        self.fields['is_active'].widget.attrs.update({'class': 'form-control'})
+        self.fields['is_active'].widget.attrs.update({'class': 'form-control','data-toggle': 'toggle','data-on': 'Si',
+                                                   'data-off': 'No',
+                                                   'checked': 'checked'})
         self.fields['groups'].widget.attrs.update({'class': 'form-control'})
 
     def clean(self):

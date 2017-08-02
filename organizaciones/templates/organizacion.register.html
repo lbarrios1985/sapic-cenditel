@@ -13,12 +13,12 @@
     <script src="{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
     <script type="text/javascript">
         $(function() {
-            $('#construir').formset({
+            $('#id_orders_table tbody tr').formset({
             // For inline formsets, be sure to set the prefix, as the default prefix
             // ('form') isn't correct.
             // Django appears to generate the prefix from the lowercase plural
             // name of the related model, with camel-case converted to underscores.
-            formTemplate: '#id_form_template'
+            prefix: 'voceros_set'
             })
         })
         $(document).ready(function ()
@@ -123,29 +123,34 @@
                     Voceros
                   </h3>
                 </div>
-                <div id="id_form_template" class="box-body table-responsive no-padding" style="display:none;">
-                    <div class="col-md-3">
-                        {{ forms.voceros.fk_tipo_documento.label }}
-                        {{ forms.voceros.fk_tipo_documento }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ forms.voceros.documento_identidad.label }}
-                        {{ forms.voceros.documento_identidad }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ forms.voceros.activo.label }}:
-                        
-                    </div>
-                    <div class="col-md-4">
-                        {{ forms.voceros.activo }}
-                    </div>
-                    <div></div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="id_orders_table">
+                        <thead>
+                          <tr>
+                              <th scope="col">Documento de Identidad</th>
+                              <th scope="col">Nombres y Apellidos </th>
+                              <th scope="col">Vocero se encuentra Activo </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {{ forms.voceros.management_form }}
+                            {% for form in forms.voceros  %}
+                            <tr id="{{ form.prefix }}-row">
+                              <td>
+                              {{ form.fk_tipo_documento }}
+                              </td>
+                              <td>
+                              {{ form.nombres }} {{ form.apellidos }}
+                              </td>
+                              <td>
+                              {{ form.activo }}
+                              </td>
+                              <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-
-                <div id="construir"></div>
-                <p>
-                    {{ forms.voceros.management_form }}
-                </p>
             </div>
         </div>
         </div>

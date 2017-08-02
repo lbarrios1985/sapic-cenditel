@@ -222,10 +222,11 @@ class Vocero(models.Model):
         @date 25-07-2017
         @version 1.0.0
     """
+    fk_org_social = models.ForeignKey(OrganizacionSocial)
     fk_tipo_documento = models.ForeignKey(TipoDocumento)
     nombres = models.CharField(max_length=120)
     apellidos = models.CharField(max_length=120)
-    documento_identidad = models.PositiveIntegerField(unique=True)
+    documento_identidad = models.PositiveIntegerField()
     sector = models.TextField(blank=True, null=True)
     casa_edificio_calle = models.TextField(blank=True, null=True)
     localidad = models.ForeignKey(Parroquia, null=True)
@@ -243,6 +244,7 @@ class Vocero(models.Model):
         ordering = ('documento_identidad',)
         verbose_name = 'Vocero'
         verbose_name_plural = 'Voceros'
+        unique_together = (("fk_org_social", "documento_identidad"),)
 
     def __str__(self):
         """!
@@ -255,40 +257,3 @@ class Vocero(models.Model):
         """
         return self.documento_identidad
 
-
-class VoceroOrganizacionSocial(models.Model):
-    """!
-        Clase que contiene el modelo de datos de los Voceros asociados a las organizacione sociales
-
-        @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
-        @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
-        @date 25-07-2017
-        @version 1.0.0
-    """
-    fk_org_social = models.ForeignKey(OrganizacionSocial)
-    fk_vocero = models.ForeignKey(Vocero)
-
-    class Meta:
-        """!
-            Clase que construye los meta datos del modelo
-
-            @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
-            @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
-            @date 25-07-2017
-            @version 1.0.0
-        """
-        ordering = ('fk_vocero',)
-        verbose_name = 'Vocero asociado a la Organizacion Social'
-        verbose_name_plural = 'Voceros asociados a las Organizaciones Sociales'
-        unique_together = (("fk_org_social", "fk_vocero"),)
-
-    def __str__(self):
-        """!
-            Fucncion que muestra la informacion sobre los Voceros asociados a las organizacione sociales
-            @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
-            @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
-            @date 25-07-2017
-            @param self <b>{object}</b> Objeto que instancia la clase
-            @return Devuelve los datos del Vocero asociado a la Organizacion Social
-        """
-        return self.fk_vocero

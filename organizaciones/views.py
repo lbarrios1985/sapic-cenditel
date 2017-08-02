@@ -29,7 +29,7 @@ from django.views.generic.edit import (
 )
 
 from .forms import (
-    FormularioRegisterOrgSocial, FormsetObj
+    FormularioRegisterOrgSocial, FormsetVocero
 )
 from multi_form_view import MultiModelFormView
 
@@ -52,7 +52,7 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
     template_name = "organizacion.register.html"
     form_classes = {
       'organizacion_social': FormularioRegisterOrgSocial,
-      'voceros': FormsetObj,
+      'voceros': FormsetVocero,
     }
     success_url = reverse_lazy('utils:inicio')
     record_id = None

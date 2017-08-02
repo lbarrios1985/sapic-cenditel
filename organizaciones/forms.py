@@ -9,7 +9,7 @@ Forms para generar los formulario del modulo organizaciones sociales
 """
 from django import forms
 from django.forms import (
-    ModelForm, formset_factory, modelform_factory, modelformset_factory
+    ModelForm, formset_factory, modelform_factory, modelformset_factory, inlineformset_factory
 )
 
 from .models import *
@@ -81,7 +81,6 @@ class FormularioVocero(ModelForm):
     @date 09-01-2017
     @version 1.0.0
     """
-
     class Meta:
         model = Vocero
         fields = ['fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo']
@@ -111,4 +110,12 @@ class FormularioVocero(ModelForm):
                                                    'checked': 'checked'})
         self.fields['activo'].label = "¿El vocero se encuentra Activo?"
 
-FormsetObj = modelformset_factory(Vocero, formset=FormularioVocero, fields=('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo'), extra=0)
+        self.queryset = Vocero.objects.none()
+
+campos = ('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo')
+
+FormsetObj = modelform_factory(Vocero, form=FormularioVocero, fields=campos)
+
+FormsetVocero = inlineformset_factory(OrganizacionSocial, Vocero, form=FormularioVocero,
+                                                fields=campos, fk_name='fk_org_social',
+                                                min_num=1, extra=0, can_delete=True)

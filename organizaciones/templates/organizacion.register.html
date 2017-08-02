@@ -18,7 +18,7 @@
             // ('form') isn't correct.
             // Django appears to generate the prefix from the lowercase plural
             // name of the related model, with camel-case converted to underscores.
-            prefix: 'voceros_set'
+            prefix: 'vocero_set'
             })
         })
         $(document).ready(function ()
@@ -124,32 +124,29 @@
                   </h3>
                 </div>
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover" id="id_orders_table">
-                        <thead>
-                          <tr>
-                              <th scope="col">Documento de Identidad</th>
-                              <th scope="col">Nombres y Apellidos </th>
-                              <th scope="col">Vocero se encuentra Activo </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            {{ forms.voceros.management_form }}
-                            {% for form in forms.voceros  %}
-                            <tr id="{{ form.prefix }}-row">
-                              <td>
-                              {{ form.fk_tipo_documento }}
-                              </td>
-                              <td>
-                              {{ form.nombres }} {{ form.apellidos }}
-                              </td>
-                              <td>
-                              {{ form.activo }}
-                              </td>
-                              <td></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                  <table class="table table-hover" id="id_orders_table">
+                    <thead>
+                      <tr>
+                          <th scope="col">Documento de Identidad</th>
+                          <th scope="col">Nombres y Apellidos</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {{ forms.voceros.management_form }}
+                    {% for form in forms.voceros  %}
+                    <tr id="{{ form.prefix }}-row">
+                      <td>
+                      {{ form.fk_tipo_documento }}
+                      {{ form.documento_identidad }}
+                      </td>
+                      <td>
+                      {{ form.nombres }} {{ form.apellidos }}
+                      </td>
+                      <td></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
             </div>
         </div>
@@ -158,6 +155,7 @@
         </form>
       </div>
     </div>
+</div>
 </div>
 {% endblock contenido %}
 

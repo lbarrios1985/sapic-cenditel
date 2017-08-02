@@ -83,7 +83,7 @@ class FormularioVocero(ModelForm):
     """
     class Meta:
         model = Vocero
-        fields = ['fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo']
+        fields = ['fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad']
 
     def __init__(self, *args, **kwargs):
         super(FormularioVocero, self).__init__(*args, **kwargs)
@@ -103,19 +103,14 @@ class FormularioVocero(ModelForm):
                                             {'class': 'form-control',
                                              'placeholder':
                                              'Documento de Identidad'})
-        self.fields['activo'].widget.attrs.update({'class': 'form-control',
-                                                   'data-toggle': 'toggle',
-                                                   'data-on': 'Si',
-                                                   'data-off': 'No',
-                                                   'checked': 'checked'})
-        self.fields['activo'].label = "¿El vocero se encuentra Activo?"
 
-        self.queryset = Vocero.objects.none()
+        #self.queryset = Vocero.objects.none()
 
-campos = ('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad', 'activo')
+campos = ('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad',)
 
 FormsetObj = modelform_factory(Vocero, form=FormularioVocero, fields=campos)
 
-FormsetVocero = inlineformset_factory(OrganizacionSocial, Vocero, form=FormularioVocero,
+FormsetVocero = inlineformset_factory(OrganizacionSocial, Vocero, form=FormsetObj,
                                                 fields=campos, fk_name='fk_org_social',
-                                                min_num=1, extra=0, can_delete=True)
+                                                min_num=1, extra=0, validate_min=True,
+                                                can_delete=True)

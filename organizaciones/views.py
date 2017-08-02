@@ -61,16 +61,12 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
     def get_objects(self):
         self.record_id = self.kwargs.get('record_id', None)
         try:
-            record = OrganizacionSocial.objects.get(pk=self.record_id)
-        except OrganizacionSocial.DoesNotExist:
-            record = None
-        try:
-            record = Vocero.objects.get(pk=self.record_id)
+            record = Vocero.objects.select_related().get(fk_org_social=self.record_id)
         except Vocero.DoesNotExist:
             record = None
         return {
-          'organizacion_social': record,
           'voceros': record,
+          'organizacion_social': record.fk_org_social if record else None,
         }
 
     def forms_valid(self, forms, **kwargs):
@@ -79,10 +75,13 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
         @return: Dirige con un mensaje de exito a el home
         """
         nueva_organizacion = forms['organizacion_social'].save()
+        nuevos_voceros = self.form_classes['voceros'](self.request.POST, instance=nueva_organizacion)
+        if nuevos_voceros.is_valid():
+            nuevos_voceros.save()
         messages.success(self.request, "El Usuario %s registro con exito la \
                                         Organizacion Social %s"
                                          % (str(self.request.user), str(nueva_organizacion.nombre)))
-        return super(RegisterOrgView, self).forms_valid(forms)
+        return redirect(self.success_url)
 
     def forms_invalid(self, forms, **kwargs):
         messages.error(self.request, "%s" % (str(forms['organizacion_social'].errors.as_data())))

@@ -1,0 +1,667 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+\usetheme{Berkeley}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage{multimedia}
+\usepackage{hyperref}
+\usepackage{varioref}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+\usepackage{lipsum}
+\usepackage{fancyvrb}
+\fvset{fontsize=\footnotesize}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{}
+\apptocmd{\frame}{}{\justifying}{} % Allow optional arguments after frame.
+\usecolortheme[{rgb={0.6,0,0}}]{structure}
+\setbeamercovered{transparent}
+\setbeamertemplate{items}[ball]
+\setbeamertemplate{blocks}[rounded][shadow=true] 
+\beamertemplateshadingbackground{gray!50}{white!50}
+\newtheorem{Ejemplo}{Django}
+\useoutertheme{infolines}
+\title []{Framework Django 1.11}
+\author{Instructor Ing. Erwin Paredes}
+%\logo{ \includegraphics[height=3cm]{figura/logo-blanco2.png}}
+\institute{CENDITEL}
+\date{\today}
+
+\begin{document}
+
+\section{Cenditel}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\subsection{La Fundación}
+\begin{frame}
+\begin{block}{Fundación CENDITEL}
+\indent   
+Somos el Centro Nacional de Desarrollo e Investigación en Tecnologías Libres, cuyas actividades son el desarrollo de proyectos con impacto tecnológico enmarcados en las áeas de Software, Hardware y Telecomunicaciones. 
+https://www.cenditel.gob.ve
+
+\end{block}
+\end{frame}
+
+\subsection{Finalidad del Curso}
+\begin{frame}
+\begin{block}{Finalidad}
+     
+Consolidar la comunidad de desarrollo en software libre alrededor de la tecnología, en este caso el framework de desarrollo Django del lenguaje de programación Python
+\end{block}
+\end{frame}
+
+\subsection{Contenido del Curso}
+\begin{frame}
+\begin{block}{Contenido del Curso}
+\begin{itemize}
+\item 
+Introducción
+\item 
+Configurar ambiente de trabajo
+\item 
+Crear proyecto
+\item 
+Crear aplicaciones y estructura del proyecto
+\item 
+Modelos y migraciones
+\item 
+Relaciones
+\item 
+Django shell y Querysets
+\item 
+Configurar URLs y primera views
+\item 
+Sistema de plantillas
+\item 
+Configurar archivos estáticos
+\item 
+Listar Registros
+\item 
+Formularios y vista para anexar registros
+\item 
+Vistas para modificar y eliminar registros
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\begin{block}{Contenido del Curso}
+\begin{itemize}
+\item
+ListView, CreateView, UpdateView, DeleteView   
+\item
+Crear Login
+\item
+Registro de Usuarios
+\item
+Decorador Login required
+\item
+Recuperar contraseña por correo
+\item
+Introducción a conceptos avanzados
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\section{Django}
+\subsection{Introducción}
+\begin{frame}
+Django: Es un entorno de trabajo para el desarrollo Web, basado en el lenguaje de programación Python.
+
+Un entorno de trabajo o framework, implica una estructura conceptual y conjunto de herramientas que típicamente son un conjunto de librerías, que permite organizar el desarrollo.
+
+Para el framework Django la estructura conceptual es el denominado MVC (Modelo Vista Controlador), esto es, se organiza el desarrollo en módulos que separan el modelo de datos, la interfaz o vista y el comportamiento.
+
+Por lo que para cada aplicación o módulo que conforma el proyecto se agrupa en lo siguientes archivos:
+
+\begin{itemize}
+ \item models.py :Contiene las clases que definen la estructura de datos
+ \item views.py  :Contiene la codificación de las funcionalidades que permiten controlar el comportamiento del sistema.
+ \item *.html    :Contiene la codificación de la interfaz 
+\end{itemize}
+\end{frame}
+
+\subsection{Configurar ambiente de trabajo}
+\begin{frame}[fragile]
+
+\begin{Large}\textbf{Sitio Oficial}\end{Large}
+\begin{verbatim}
+
+https://www.djangoproject.com/
+
+Instalación
+
+https://docs.djangoproject.com/en/1.11/intro/install
+
+Descarga:
+
+https://www.djangoproject.com/download/
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+
+\begin{Large}\textbf{Instalación}\end{Large}
+\begin{verbatim}
+// Descomprimir el archivo
+
+tar -xzvf Django1.11.tar.gz
+
+cd Django1.11
+
+python setup.py install
+
+// Comprobar la instalación del framework:
+
+python
+import django
+django.VERSION
+
+Ctrl + D
+\end{verbatim}
+\end{frame}
+
+\subsection{Crear proyecto}
+\begin{frame}[fragile]
+
+\begin{verbatim}
+// Crear el primer proyecto:
+
+django-admin startproject curso
+
+// este comando crea la siguiente infraestructura
+de carpetas y archivos:
+
+curso/
+    manage.py
+    curso/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+
+
+Configurar la base de datos
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+
+\begin{verbatim}
+// Se debe haber instalado el gestor de la Base de
+Datos Postgresql  y la librería de conexión psycopg2
+// Creamos la base de datos:
+su postgres
+psql
+CREATE USER administrador;
+CREATE DATABASE curso;
+
+// Se edita el archivo curso/settings.py la constante
+DATABASES = {
+   'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'curso',
+        'USER': 'administrador',
+        'PASSWORD': 'clave',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+  } }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+// Se guarda y ejecuta el siguiente comando para
+crear las tablas iniciales del proyecto:
+
+python manage.py migrate
+
+// Se ejcuta el comando para crear el superusuario o 
+usuario administrador del proyecto:
+
+python manage.py createsuperuser
+
+// Se introducen los datos que solicita
+// Se ejecuta el siguiente comando para activar el 
+servidor de prueba de forma local
+
+python manage.py runserver
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+python manage.py runserver
+
+// Arroja el siguiente mensaje
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+July 26, 2017 - 15:32:30
+Django version 1.11.3,using settings 'curso.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+// Abrimos el navegador de preferencia y colocamos la
+siguiente dirección para acceder al sistema
+administrativo del proyecto:
+
+http://localhost:8000/admin
+\end{verbatim}
+\end{frame}
+
+\subsection{Crear aplicaciones}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+http://localhost:8000/admin
+
+// En el debemos autenticarnos con el usuario y
+password del superusuario creado en los pasos
+anteriores
+
+// Allí podemos gestionar los usuarios del sistema
+así como los grupos que evenctualmente se utilizan 
+para asignar permisos de acceso.
+
+// En el terminal presionar las teclas Ctrl + C para
+interrumpir la ejecución del servidor y así crear 
+las aplicaciones del proyecto.
+
+python manage.py startapp encuesta
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Modelos}
+\begin{frame}[fragile]
+\begin{verbatim}
+python manage.py startapp encuesta
+
+// Se edita el archivo encuesta/models.py
+
+from django.db import models
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date =models.DateTimeField('date published')
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, 
+               on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+// Almacenamos y editamos el archivo 
+curso/settings.py la constante:
+
+INSTALLED_APPS = [
+    ...
+    'django.contrib.staticfiles',
+    'encuesta',
+]
+
+// Para crear las tablas correspondiente de models.py
+se ejecuta el comando:
+
+python manage.py makemigrations encuesta
+
+python manage.py migrate encuesta
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Relaciones}
+\begin{frame}[fragile]
+\begin{verbatim}
+// Para el manejo de las tablas por medio del 
+framework se puede realizar desde el terminal 
+con el comando:
+
+python manage.py shell
+
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Django shell y Querysets}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+// Allí podemos ejecutar las siguientes instrucciones
+
+from encuesta.models import Question, Choice
+from django.utils import timezone
+
+Question.objects.all()
+q = Question(question_text="Que hay de nuevo?", 
+                     pub_date=timezone.now())
+q.save()
+q.id
+q.question_text
+q.pub_date
+q.question_text = "Q ai d nuevo?"
+q.save()
+
+Ctril + D para salir
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Editamos nuevamente el archivo encuesta/models.py 
+para añadir el sigueinte metodo a la clase Question
+
+import datetime
+
+from django.db import models
+from django.utils import timezone
+
+class Question(models.Model):
+    # ...
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() -
+                      datetime.timedelta(days=1)
+
+Guardamos y volvemos a terminal:
+
+python manage.py shell
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+from polls.models import Question, Choice
+
+Question.objects.all()
+q = Question.objects.get(pk=1)
+q.was_published_recently()
+
+q = Question.objects.filter(id=1)
+
+q = Question.objects.filter(
+          question_text__startswith='Q')
+
+from django.utils import timezone
+current_year = timezone.now().year
+Question.objects.get(pub_date__year=current_year)
+
+Question.objects.get(id=2) Error...
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+q = Question.objects.get(pk=1)
+q.choice_set.all()
+q.choice_set.create(choice_text='No mucho', votes=0)
+q.choice_set.create(choice_text='Muchas cosas' 
+                                           ,votes=0)
+c = q.choice_set.create(choice_text='De todo un poco'
+                                           ,votes=0)
+
+c.question
+
+q.choice_set.all()
+q.choice_set.count()
+
+Crtl + D para salir
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Incluir el modelo de la aplicación encuesta 
+en el sistema admin:
+
+Editamos el archivo encuesta/admin.py
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
+
+Guardamos y ejecutamos el servidor 
+de prueba nuevamente:
+
+python manage.py runserver
+
+en el navegador http://localhost:8000/admin
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Configurar URLs y primera views}
+\begin{frame}[fragile]
+\begin{verbatim}
+Crear la primera vista para acceso del proyecto 
+Editamos el archivo encuesta/urls.py
+
+from django.conf.urls import url
+from . import views
+urlpatterns = [
+    # ex: /encueta/
+    url(r'^$', views.index, name='index'),
+    # ex: /encuesta/5/
+    url(r'^(?P<question_id>[0-9]+)/$', 
+    views.detail, name='detail'),
+    # ex: /encuesta/5/results/
+    url(r'^(?P<question_id>[0-9]+)/results/$',
+    views.results, name='results'),
+    # ex: /encuesta/5/vote/
+    url(r'^(?P<question_id>[0-9]+)/vote/$',
+     views.vote, name='vote'),
+]
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Editamos el archivo encuesta/views.py:
+
+from django.http import HttpResponse
+from .models import Question
+
+def index(request):
+    question_list = Question.objects.order_by('-pub_date')[:5]
+    output = ', '.join([q.question_text for q in question_list])
+    return HttpResponse(output)
+
+def detail(request, question_id):
+    return HttpResponse("Question No: %s." % question_id)
+
+def results(request, question_id):
+    response = "Results of question %s." 
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("Voting on question %s." % question_id)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Guardamos y ejecutamos el servidor de prueba y 
+probamos los enlaces desde el navegador:
+
+python manage.py runserver
+
+En el navegador probamos los siguientes enlaces:
+
+http://localhost:8000/encueta
+http://localhost:8000/encueta/1
+http://localhost:8000/encueta/1/result
+http://localhost:8000/encueta/1/vote
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Sistema de plantillas}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Uso del plantillas:
+
+Creamos la siguiente estructura
+
+cd encuesta
+mkdir templates
+mkdir templates/encuesta
+
+y editamos el archivo index.html allí
+
+gedit encuesta/templates/encuesta/index.html
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+{% if question_list %}
+    <ul>
+    {% for question in question_list %}
+        <li>
+         <a href="/encuesta/{{ question.id }}/">
+          {{
+            question.question_text
+          }}
+         </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay encuestas.</p>
+{% endif %}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Guardamos y modificamos el archivo encuesta views.py 
+para que utilice la plantilla
+
+from django.http import HttpResponse
+from django.template import loader
+
+from .models import Question
+
+
+def index(request):
+    question_list = Question.objects.order_by('-pub_date')[:5]
+    template = loader.get_template('polls/index.html')
+    context = {
+        'question_list': question_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+o utilizando la shortcuts render
+
+from django.shortcuts import render
+
+from .models import Question
+
+
+def index(request):
+    question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'question_list': question_list}
+    return render(request, 'polls/index.html', context)
+
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Configurar estáticos}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Listar Registros}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Anexar registros}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Modificar y eliminar registros}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{View's}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Crear Login}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Registro de Usuarios}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Login required}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Recuperar contraseña por correo}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\subsection{Conceptos avanzados}
+\begin{frame}[fragile]
+\begin{verbatim}
+
+\end{verbatim}
+\end{frame}
+
+\end{document}

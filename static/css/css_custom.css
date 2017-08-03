@@ -287,3 +287,11 @@ hr {
 .alert {
   margin-bottom: -45px;
 }
+
+.dynamic-form .delete-row{
+  color: #f44336;
+}
+
+.table-hover a{
+  color: #4CAF50;
+}

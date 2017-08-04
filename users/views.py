@@ -33,6 +33,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import (
     reverse_lazy, reverse
 )
+from django.core.validators import validate_email
 
 from django.shortcuts import (
     render, redirect, get_object_or_404
@@ -56,7 +57,6 @@ from .models import UserProfile
 
 
 
-
 class LoginView(FormView):
     """!
     Muestra el formulario de ingreso a la aplicación 
@@ -77,12 +77,18 @@ class LoginView(FormView):
         """
         usuario = form.cleaned_data['usuario']
         contrasena = form.cleaned_data['contrasena']
-        if '@' in usuario:
+
+        try:
+            validate_email(usuario)
             try:
                 usuario = User.objects.get(email=usuario).username
+                valid_email = True
             except:
                 messages.error(self.request, 'No existe este correo: %s \
                                               asociado a una cuenta' % (usuario))
+        except:
+            valid_email = False
+
         usuario = authenticate(username=usuario, password=contrasena)
         if usuario is not None:
             login(self.request, usuario)

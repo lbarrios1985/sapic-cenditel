@@ -39,7 +39,6 @@ from .models import (
 
 from utils.views import LoginRequeridoPerAuth
 
-
 class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
     """!
     Muestra el formulario de registro de la organizacion social
@@ -87,3 +86,7 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
         messages.error(self.request, "%s" % (str(forms['organizacion_social'].errors.as_data())))
 
         return super(RegisterOrgView, self).forms_invalid(forms)
+
+
+def ListOrgView(request):
+    return render(request, 'organizaciones.list.html')

@@ -9,12 +9,14 @@ Forms para generar los formulario del modulo organizaciones sociales
 """
 from django import forms
 from django.forms import (
-    ModelForm, formset_factory, modelform_factory, modelformset_factory, inlineformset_factory
-)
+    ModelForm,  modelform_factory, inlineformset_factory
+    )
 
 from .models import *
 
-from utils.views import obtenerEstados, listMunicipios
+from utils.views import (
+    obtenerEstados, listMunicipios
+    )
 
 
 class FormularioRegisterOrgSocial(ModelForm):
@@ -103,8 +105,6 @@ class FormularioVocero(ModelForm):
                                             {'class': 'form-control',
                                              'placeholder':
                                              'Documento de Identidad'})
-
-        #self.queryset = Vocero.objects.none()
 
 campos = ('fk_tipo_documento', 'nombres', 'apellidos', 'documento_identidad',)
 

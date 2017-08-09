@@ -11,7 +11,8 @@
 from django.db import models
 
 from utils.models import (
-    Parroquia, TipoOrganizacion, TipoDocumento
+    Parroquia, TipoOrganizacion, TipoDocumento,
+    UnidadesOrganizacionSocial, ComiteUnidadEjecutiva
 )
 
 
@@ -224,12 +225,14 @@ class Vocero(models.Model):
     """
     fk_org_social = models.ForeignKey(OrganizacionSocial)
     fk_tipo_documento = models.ForeignKey(TipoDocumento)
+    fk_rol_unidad = models.ForeignKey(UnidadesOrganizacionSocial, null=True)
     nombres = models.CharField(max_length=120)
     apellidos = models.CharField(max_length=120)
     documento_identidad = models.PositiveIntegerField()
     sector = models.TextField(blank=True, null=True)
     casa_edificio_calle = models.TextField(blank=True, null=True)
     localidad = models.ForeignKey(Parroquia, null=True)
+    telefono = models.CharField(max_length=14, null=True)
     activo = models.BooleanField(default=True)
 
     class Meta:
@@ -255,5 +258,41 @@ class Vocero(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos del Vocero
         """
-        return self.documento_identidad
+        return str(self.documento_identidad)
 
+
+class VoceroComite(models.Model):
+    """!
+        Clase que contiene el modelo de datos de los Voceros que pertenecen a un comite de la unidad ejecutiva
+
+        @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+        @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+        @date 25-07-2017
+        @version 1.0.0
+    """
+    fk_vocero = models.OneToOneField(Vocero)
+    fk_comite = models.ForeignKey(ComiteUnidadEjecutiva)
+
+    class Meta:
+        """!
+            Clase que construye los meta datos del modelo
+
+            @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+            @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+            @date 25-07-2017
+            @version 1.0.0
+        """
+        ordering = ('fk_vocero',)
+        verbose_name = 'Vocero del comite'
+        verbose_name_plural = 'Voceros de los comites'
+
+    def __str__(self):
+        """!
+            Fucncion que muestra la informacion sobre los Voceros
+            @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+            @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+            @date 25-07-2017
+            @param self <b>{object}</b> Objeto que instancia la clase
+            @return Devuelve los datos del Vocero
+        """
+        return self.fk_vocero

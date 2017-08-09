@@ -9,7 +9,6 @@ Vista que controla los procesos de los usuarios
 """
 
 from django.shortcuts import render
-
 from django import forms
 from django.db.models import Q
 from django.conf import settings
@@ -49,17 +48,20 @@ from multi_form_view import MultiModelFormView
 
 from utils.views import LoginRequeridoPerAuth
 
-from .forms import (
-    FormularioLogin, FormularioUpdate, FormularioAdminRegPerfil,
-    FormularioAdminRegistro, PasswordChangeForm, FormularioAdminUpdate
-)
-from .models import UserProfile
+from .forms import *
+
+from organizaciones.models import VoceroComite
+
+from .models import (
+    UserProfile, UserProfileVocero
+    )
+
 
 
 
 class LoginView(FormView):
     """!
-    Muestra el formulario de ingreso a la aplicación 
+    Muestra el formulario de ingreso a la aplicación
 
     @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
@@ -446,4 +448,84 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
         if self.record_id is not None:
             messages.success(self.request, "Usuario %s Actualizado con exito\
                                            " % (str(objeto.username)))
-            return super(UpdatePerfil, self).forms_valid(forms)
+        return super(UpdatePerfil, self).forms_valid(forms)
+
+
+class RegisterVocerosView(LoginRequeridoPerAuth, MultiModelFormView):
+    """!
+    Muestra el formulario de registro de usuarios
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 09-01-2017
+    @version 1.0.0
+    """
+    model = UserProfileVocero
+    form_classes = {
+      'user': FormularioAdminRegVoceros,
+      'user_vocero': FormularioRegVoceros,
+    }
+    template_name = 'users.register.vocero.html'
+    success_url = reverse_lazy('users:options')
+    group_required = [u"Administradores"]
+    record_id = None
+
+
+    def get_objects(self, **kwargs):
+        """
+        Carga el formulario en la vista,para actualizar el perfil del  usuario
+        @return: El contexto con los objectos para la vista
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except self.model.DoesNotExist:
+            record = None
+        return {
+          'user_vocero': record,
+          'user': record.fk_user if record else None}
+
+    def forms_valid(self, forms, **kwargs):
+        """
+        Valida el formulario del proyecto
+        @return: Dirige con un mensaje de exito al registro de proyecto
+        """
+        # Campos para guardar los datos de un Nuevo User
+        documento_identidad = forms['user_vocero'].cleaned_data['documento']
+        tipo_documento = forms['user_vocero'].cleaned_data['fk_tipo_documento']
+        organizacion_social = forms['user_vocero'].cleaned_data['organizacion']
+        comite = forms['user_vocero'].cleaned_data['comite_unidad_ejecutiva']    
+        try:
+            vocero = Vocero.objects.get(fk_org_social=organizacion_social,
+                                   fk_tipo_documento=tipo_documento,
+                                   documento_identidad=documento_identidad)
+        except:
+            pass
+        actualizar_vocero = self.form_classes['user_vocero'](self.request.POST, instance=vocero)
+        actualizar_vocero.save(commit=False)
+
+        nuevo_usuario = forms['user'].save()
+        vocero_actualizado = actualizar_vocero.save()
+        nuevo_usuario.groups.add(Group.objects.get(pk=2))
+        asociar_voceros = self.model(fk_user=nuevo_usuario,
+                                     fk_vocero=vocero_actualizado)
+        if comite is not None:
+            try:
+                comite_unidad = VoceroComite(fk_vocero=vocero_actualizado,
+                                             fk_comite=fk_comite)
+                comite_unidad.save()
+            except:
+                messages.warning(self.request, "Existe un problema al relacionar el comite a este vocero")
+
+        try:
+            asociar_voceros.save()
+            nombre_vocero = str(vocero_actualizado.nombres) + " " + str(vocero_actualizado.apellidos)
+            messages.success(self.request, "Se creo el usuario %s, para el vocero %s" % (nuevo_usuario.username, nombre_vocero))
+        except:
+            messages.error(self.request, "El voceros al que quieres asociar a la cuenta ya existe o ya se encuentra asociado" )
+
+        return redirect(self.success_url)
+
+    def forms_invalid(self, forms, **kwargs):
+
+        return super(RegisterVocerosView, self).forms_invalid(forms)

@@ -284,9 +284,11 @@ hr {
   color: #33b7a5;
 }
 
+
 .alert {
-  margin-bottom: -45px;
+  margin-bottom: 0px;
 }
+
 
 .dynamic-form .delete-row{
   color: #f44336;

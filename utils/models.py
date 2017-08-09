@@ -302,9 +302,9 @@ class CalidadServicio(models.Model):
         return self.estatus
 
 
-class UnidadesConsejoComunal(models.Model):
+class UnidadesOrganizacionSocial(models.Model):
     """!
-    Clase que contiene el modelo de datos para Las Unidades del Consejo Comunal
+    Clase que contiene el modelo de datos para Las Unidades de la Organizacion Social
 
     @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
@@ -315,8 +315,8 @@ class UnidadesConsejoComunal(models.Model):
 
     class Meta:
         ordering = ('tipo',)
-        verbose_name = 'Unidad del Consejo Comunal'
-        verbose_name_plural = 'Unidades de los Consejos Comunales'
+        verbose_name = 'Unidad del la Organizacion Social'
+        verbose_name_plural = 'Unidades de los Organizaciones Sociales'
 
     def __str__(self):
         return self.tipo
@@ -331,13 +331,13 @@ class ComiteUnidadEjecutiva(models.Model):
     @date 25-05-2017
     @version 1.0.0
     """
-    fk_unidad = models.ForeignKey(UnidadesConsejoComunal, verbose_name="Unidad Ejecutiva")
+    fk_unidad = models.ForeignKey(UnidadesOrganizacionSocial, verbose_name="Unidad Ejecutiva")
     tipo = models.CharField(max_length=100)
 
     class Meta:
         ordering = ('tipo',)
-        verbose_name = 'Comite del Consejo Comunal'
-        verbose_name_plural = 'Comites del consjo comunal'
+        verbose_name = 'Comite de la Organizacion Social'
+        verbose_name_plural = 'Comites de las Organizaciones Sociales'
 
     def __str__(self):
         return self.tipo

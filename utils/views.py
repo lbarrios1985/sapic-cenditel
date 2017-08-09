@@ -58,7 +58,6 @@ def obtenerMunicipios(request):
             id_estado = request.GET.get('id_estado')
             municipios = Municipio.objects.filter(estado_id=id_estado).values('id', 'nombre')
             data = json.dumps(list(municipios), cls=DjangoJSONEncoder)
-            print(data)
         else:
             data = {}
     except:
@@ -92,16 +91,14 @@ def obtenerParroquias(request):
 
     return HttpResponse(data, content_type='application/json')
 
+
 def listMunicipios():
     """
-    Función que permite obtener el municipio asociado a una parroquia
+    Función que permite obtener la lista de Municipios
 
-    El método hace un llamado a un servicio REST de la aplicación comun
+    El método hace una lista consultando el modelo Municipio
 
-    @param id_parroquia: Identificador de la parroquia
-    @type id_parroquia: entero
-
-    @return: El municipio asociado a la parroquia
+    @return: Lista de Municipios
     """
     try:
         if Municipio.objects.exists():
@@ -112,6 +109,131 @@ def listMunicipios():
         consulta = [{'id': '', 'nombre': ''}]
 
     return consulta
+
+
+def listParroquias():
+    """
+    Función que permite obtener la lista de Parroquias
+
+    El método hace una lista consultando el modelo Parroquia
+
+    @return: Lista de Parroquias
+    """
+    try:
+        if Parroquia.objects.exists():
+            consulta = Parroquia.objects.all().values('id', 'nombre')
+        else:
+            consulta = [{'id': '', 'nombre': ''}]
+    except:
+        consulta = [{'id': '', 'nombre': ''}]
+
+    return consulta
+
+
+def obtenerTipoDocumento():
+    """
+    Función que permite obtener la lista de estados
+
+    El método hace una lista consultando el modelo Estado
+
+    @return: Lista de estados
+    """
+    try:
+
+        if TipoDocumento.objects.exists():
+            consulta = TipoDocumento.objects.all().values('id', 'nombre')
+        else:
+            consulta = [{'id': '', 'abreviatura': ''}]
+    except:
+        consulta = [{'id': '', 'abreviatura': ''}]
+
+    return consulta
+
+
+def obtenerTipoOrganizacion():
+    """
+    Función que permite obtener la lista de tipo de organizaciones
+
+    El método hace una lista consultando el modelo Tipo de Organizaciones
+
+    @return: Lista de Tipos de organizaciones
+    """
+    try:
+
+        if TipoOrganizacion.objects.exists():
+            consulta = TipoOrganizacion.objects.all().values('id', 'abreviatura')
+        else:
+            consulta = [{'id': '', 'abreviatura': ''}]
+    except:
+        consulta = [{'id': '', 'abreviatura': ''}]
+
+    return consulta
+
+
+def obtenerUnidades():
+    """
+    Función que permite obtener la lista de las Unidades Organizacion Social
+
+    El método hace una lista consultando el modelo Unidades Organizacion Social
+
+    @return: Lista de Unidades
+    """
+    try:
+
+        if UnidadesOrganizacionSocial.objects.exists():
+            consulta = UnidadesOrganizacionSocial.objects.all().values('id', 'tipo')
+        else:
+            consulta = [{'id': '', 'tipo': ''}]
+    except:
+        consulta = [{'id': '', 'tipo': ''}]
+
+    return consulta
+
+
+def listComites():
+    """
+    Función que permite obtener la lista de los Comites de las Organizacion Social
+
+    El método hace una lista consultando el modelo de Comites de las Organizacion Social
+
+    @return: Lista de Unidades
+    """
+    try:
+
+        if ComiteUnidadEjecutiva.objects.exists():
+            consulta = ComiteUnidadEjecutiva.objects.all().values('id', 'tipo')
+        else:
+            consulta = [{'id': '', 'tipo': ''}]
+    except:
+        consulta = [{'id': '', 'tipo': ''}]
+
+    return consulta
+
+
+def obtenerComitesbyUnidades(request):
+    """
+    Función que permite obtener la lista de comites asociados a la unidad
+
+    El método hace un llamado al modelo para realizar una consulta
+
+    @param fk_unidad: Identificador de la unidad
+    @type fk_unidad: entero
+
+    @return: Lista de comites asociados a la unidad
+    """
+    try:
+        if UnidadesOrganizacionSocial.objects.exists():
+            fk_unidad = request.GET.get('fk_unidad')
+            comites = ComiteUnidadEjecutiva.objects.filter(fk_unidad=fk_unidad).values('id', 'tipo')
+            data = json.dumps(list(comites), cls=DjangoJSONEncoder)
+        else:
+            data = {}
+    except:
+        data = {}
+        pass
+
+    return HttpResponse(data, content_type='application/json')
+
 
 class LoginRequeridoPerAuth(LoginRequiredMixin, GroupRequiredMixin):
     """!

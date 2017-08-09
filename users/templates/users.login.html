@@ -27,8 +27,8 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
               </div>
                       <div class="checkbox icheck">
-                        {{form.remember_me}}
-                        {{form.remember_me.label}} 
+                        {{ form.remember_me }}
+                        {{ form.remember_me.label }} 
                       </div>
                   <div class="form-group has-feedback {% if form.captcha.errors %}has-error{% endif %}">
                     <a onclick="refresh_captcha(this);" style="cursor: pointer">

@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^perfil/(?P<pk>\d+)/$', ModalsPerfil.as_view(),
         name="modal_perfil"),
     url(r'^registrar/$', RegisterView.as_view(), name="registrar"),
+    url(r'^registrar-voceros/$', RegisterVocerosView.as_view(), name="registrar_voceros"),
 
     # Ajax list Users, for Administradores
     url(r'^listar-usuarios/$', ListUsersAjaxView.as_view(),

@@ -245,8 +245,8 @@ class DataDetailView(LoginRequeridoPerAuth, ListView):
     @version 1.0.0
     """
     template_name = 'users.data.detail.html'
-    model = UserProfile
-    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+    model = UserProfileVocero
+    group_required = [u"Voceros"]
 
     def dispatch(self, request, *args, **kwargs):
         if int(request.user.pk) != int(self.kwargs.get('pk', None)):
@@ -267,6 +267,102 @@ class DataDetailView(LoginRequeridoPerAuth, ListView):
         context['upUser'] = record
         return context
 
+
+class UpdatePerfilAdmin(LoginRequeridoPerAuth, MultiModelFormView):
+    """!
+    Actualizar el perfil del usuario
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 31-01-2017
+    @version 1.0.0
+    """
+    model = UserProfile
+    form_classes = {
+      'user': FormularioUpdate,
+      'user_perfil': FormularioAdminRegPerfil,
+    }
+    template_name = 'users.update.perfil.html'
+    success_url = reverse_lazy('users:options')
+    group_required = [u"Administradores"]
+    record_id = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if int(request.user.pk) != int(self.kwargs.get('pk', None)):
+            return redirect('utils:403error')
+        return super(UpdatePerfilAdmin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Carga el formulario en la vista,para registrar usuarios
+        @return: El contexto con los objectos para la vista
+        """
+        context = super(UpdatePerfilAdmin, self).get_context_data(**kwargs)
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        context['upUser'] = record
+        return context
+
+    def get_objects(self, **kwargs):
+        """
+        Carga el formulario en la vista,para actualizar el perfil del  usuario
+        @return: El contexto con los objectos para la vista
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        return {
+          'user_perfil': record,
+          'user': record.fk_user if record else None}
+
+
+class DataDetailAdminView(LoginRequeridoPerAuth, ListView):
+    """!
+    Consultar los datos basicos del usuario
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 21-07-2017
+    @version 1.0.0
+    """
+    template_name = 'users.data.detail.html'
+    model = UserProfile
+    group_required = [u"Administradores"]
+
+    def dispatch(self, request, *args, **kwargs):
+        if int(request.user.pk) != int(self.kwargs.get('pk', None)):
+            return redirect('utils:403error')
+        return super(DataDetailAdminView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Carga el formulario en la vista,para registrar usuarios
+        @return: El contexto con los objectos para la vista
+        """
+        context = super(DataDetailAdminView, self).get_context_data(**kwargs)
+        self.record_id = self.kwargs.get('pk', None)
+        try:
+            record = self.model.objects.select_related().get(fk_user=self.record_id)
+        except User.DoesNotExist:
+            record = None
+        context['upUser'] = record
+        return context
+
+    def forms_valid(self, forms, **kwargs):
+        """
+        Valida el formulario de registro del perfil de usuario
+        @return: Dirige con un mensaje de exito a el home
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        objeto = get_object_or_404(User, pk=self.record_id)
+        if self.record_id is not None:
+            messages.success(self.request, "Usuario %s Actualizado con exito\
+                                           " % (str(objeto.username)))
+        return super(UpdatePerfilAdmin, self).forms_valid(forms)
 
 
 class ListUsersView(LoginRequeridoPerAuth, TemplateView):
@@ -395,14 +491,14 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
     @date 31-01-2017
     @version 1.0.0
     """
-    model = UserProfile
+    model = UserProfileVocero
     form_classes = {
       'user': FormularioUpdate,
       'user_perfil': FormularioAdminRegPerfil,
     }
     template_name = 'users.update.perfil.html'
     success_url = reverse_lazy('users:options')
-    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+    group_required = [u"Voceros"]
     record_id = None
 
     def dispatch(self, request, *args, **kwargs):
@@ -453,7 +549,7 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
 
 class RegisterVocerosView(LoginRequeridoPerAuth, MultiModelFormView):
     """!
-    Muestra el formulario de registro de usuarios
+    Muestra el formulario de registro de usuarios voceros
 
     @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
@@ -487,42 +583,66 @@ class RegisterVocerosView(LoginRequeridoPerAuth, MultiModelFormView):
 
     def forms_valid(self, forms, **kwargs):
         """
-        Valida el formulario del proyecto
+        Valida el formulario del perfil de vocero y usuario
         @return: Dirige con un mensaje de exito al registro de proyecto
         """
-        # Campos para guardar los datos de un Nuevo User
+        # Campos para instanciar el vocero y actualizar sus campos
         documento_identidad = forms['user_vocero'].cleaned_data['documento']
         tipo_documento = forms['user_vocero'].cleaned_data['fk_tipo_documento']
         organizacion_social = forms['user_vocero'].cleaned_data['organizacion']
-        comite = forms['user_vocero'].cleaned_data['comite_unidad_ejecutiva']    
+        comite = forms['user_vocero'].cleaned_data['comite_unidad_ejecutiva']
+
+        # Verifica si el vocero tiene registro sobre la organizacion social
         try:
             vocero = Vocero.objects.get(fk_org_social=organizacion_social,
-                                   fk_tipo_documento=tipo_documento,
-                                   documento_identidad=documento_identidad)
-        except:
-            pass
-        actualizar_vocero = self.form_classes['user_vocero'](self.request.POST, instance=vocero)
-        actualizar_vocero.save(commit=False)
+                                        fk_tipo_documento=tipo_documento,
+                                        documento_identidad=documento_identidad)
+            actualizar_vocero = self.form_classes['user_vocero'](
+                                self.request.POST,
+                                instance=vocero)
+            actualizar_vocero.save(commit=False)
 
-        nuevo_usuario = forms['user'].save()
-        vocero_actualizado = actualizar_vocero.save()
-        nuevo_usuario.groups.add(Group.objects.get(pk=2))
-        asociar_voceros = self.model(fk_user=nuevo_usuario,
-                                     fk_vocero=vocero_actualizado)
-        if comite is not None:
+            # Crea el nuevo usuario a partir del formulario
+            nuevo_usuario = forms['user'].save()
+            # Agrega al grupo de voceros al nuevo usuario
+            nuevo_usuario.groups.add(Group.objects.get(pk=2))
+            # Actualiza los datos del vocero a parit de la instancia del formulario
+            vocero_actualizado = actualizar_vocero.save()
+            # Asocia el vocero con la nueva cuenta de usuario
+            asociar_voceros = self.model(fk_user=nuevo_usuario,
+                                         fk_vocero=vocero_actualizado)
+            # Si el usuario pertenece a un comite lo asocia
+            if comite is not None:
+                try:
+                    # Asocia el vocero con un comite de la unidad Ejecutiva
+                    comite_unidad = VoceroComite(fk_vocero=vocero_actualizado,
+                                                 fk_comite=comite)
+                    comite_unidad.save()
+                except:
+                    messages.warning(self.request, "Existe un problema al \
+                                                    relacionar el comite a \
+                                                    este vocero")
             try:
-                comite_unidad = VoceroComite(fk_vocero=vocero_actualizado,
-                                             fk_comite=fk_comite)
-                comite_unidad.save()
+                # Crea la cuenta de usuario vocero
+                asociar_voceros.save()
+                nombre_vocero = str(vocero_actualizado.nombres) + " \
+                                " + str(vocero_actualizado.apellidos)
+                messages.success(self.request, "Se creo el usuario %s, para el \
+                                                vocero %s" % (
+                                                nuevo_usuario.username,
+                                                nombre_vocero))
             except:
-                messages.warning(self.request, "Existe un problema al relacionar el comite a este vocero")
+                messages.error(self.request, "El voceros al que quieres asociar  \
+                                              a la cuenta ya existe o ya se \
+                                              encuentra asociado")
+                return redirect(self.success_url)
 
-        try:
-            asociar_voceros.save()
-            nombre_vocero = str(vocero_actualizado.nombres) + " " + str(vocero_actualizado.apellidos)
-            messages.success(self.request, "Se creo el usuario %s, para el vocero %s" % (nuevo_usuario.username, nombre_vocero))
         except:
-            messages.error(self.request, "El voceros al que quieres asociar a la cuenta ya existe o ya se encuentra asociado" )
+            messages.error(self.request, "Este Vocero %s, no se encuentra \
+                                          asociado a esta organizacion: %s" % (
+                                          documento_identidad,
+                                          organizacion_social.nombre))
+            return redirect(self.success_url)
 
         return redirect(self.success_url)
 

@@ -37,7 +37,11 @@ urlpatterns = [
     url(r'^perfil/(?P<pk>\d+)/$', ModalsPerfil.as_view(),
         name="modal_perfil"),
     url(r'^registrar/$', RegisterView.as_view(), name="registrar"),
+    url(r'^modificar-mis-datos-admin/(?P<pk>\d+)/$', UpdatePerfilAdmin.as_view(), name="update_perfil_admin"),
+    url(r'^mis-datos-admin/(?P<pk>\d+)/$', DataDetailAdminView.as_view(),
+     name="data_detail_admin"),
     url(r'^registrar-voceros/$', RegisterVocerosView.as_view(), name="registrar_voceros"),
+
 
     # Ajax list Users, for Administradores
     url(r'^listar-usuarios/$', ListUsersAjaxView.as_view(),

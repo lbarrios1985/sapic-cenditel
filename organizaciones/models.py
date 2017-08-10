@@ -59,7 +59,7 @@ class OrganizacionSocial(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos de la organizacion social
         """
-        return self.codigo
+        return self.codigo + " | " + self.nombre
 
 
 class MovimientoSocial(models.Model):

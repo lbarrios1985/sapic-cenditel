@@ -65,7 +65,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
+                      {% if 'Administradores' in request.session.grupos %}
+                        <a href="{% url 'users:data_detail_admin' request.user.pk %}">
+                      {% else %}
                         <a href="{% url 'users:data_detail' request.user.pk %}">
+                      {% endif %}
                         <img class="center-block" src="{% static 'media/iconos/mi_usuario.png' %}"  width="114px" height="82px"/>
                         </a>
                         <p class="text-center">Informacion Sobre mi Usuario</p>

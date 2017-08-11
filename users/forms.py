@@ -379,6 +379,7 @@ class FormularioRegVoceros(ModelForm):
 
         self.fields['fk_tipo_documento'].widget.attrs.update({'class':'form-control'})
         self.fields['fk_tipo_documento'].empty_label = 'Seleccione El tipo de Documento'
+        self.fields['fk_tipo_documento'].label = 'Tipo de Documento'
         self.fields['fk_tipo_documento'].required = True
 
         self.fields['documento'].widget.attrs.update({'class':'form-control'})

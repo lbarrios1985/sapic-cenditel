@@ -320,6 +320,18 @@ class UpdatePerfilAdmin(LoginRequeridoPerAuth, MultiModelFormView):
           'user_perfil': record,
           'user': record.fk_user if record else None}
 
+    def forms_valid(self, forms, **kwargs):
+        """
+        Valida el formulario de registro del perfil de usuario
+        @return: Dirige con un mensaje de exito a el home
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        objeto = get_object_or_404(User, pk=self.record_id)
+        if self.record_id is not None:
+            messages.success(self.request, "Usuario %s Actualizado con exito\
+                                           " % (str(objeto.username)))
+        return super(UpdatePerfilAdmin, self).forms_valid(forms)
+
 
 class DataDetailAdminView(LoginRequeridoPerAuth, ListView):
     """!

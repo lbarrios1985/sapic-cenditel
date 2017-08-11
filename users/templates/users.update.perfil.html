@@ -13,7 +13,12 @@
     </ul>
     <!-- Fin Nav tabs -->
     <!-- Inicio Tab panes -->
-    <form id="form_perfil" action="{% url 'users:update_perfil' upUser.fk_user.pk %}" method="post">
+    {% if 'Administradores' in request.session.grupos %}
+    
+      <form id="form_perfil" action="{% url 'users:update_perfil_admin' upUser.fk_user.pk %}" method="post">
+    {% else %}
+      <form id="form_perfil" action="{% url 'users:update_perfil' upUser.fk_user.pk %}" method="post">
+    {% endif %}
     <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="cuenta">
         <h3>Actualizar la cuenta de usuario </h3>

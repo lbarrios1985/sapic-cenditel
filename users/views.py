@@ -264,7 +264,16 @@ class DataDetailView(LoginRequeridoPerAuth, ListView):
             record = self.model.objects.select_related().get(fk_user=self.record_id)
         except User.DoesNotExist:
             record = None
+        if record.fk_vocero.fk_rol_unidad.pk == 1:
+            try:
+                comite = VoceroComite.objects.get(fk_vocero=record.fk_vocero)
+            except:
+                comite = {}
+                comite['fk_comite'] = "Este vocero no fue asignado a un comite"
+        else:
+            comite = None
         context['upUser'] = record
+        context['comite'] = comite
         return context
 
 
@@ -319,6 +328,18 @@ class UpdatePerfilAdmin(LoginRequeridoPerAuth, MultiModelFormView):
         return {
           'user_perfil': record,
           'user': record.fk_user if record else None}
+
+    def forms_valid(self, forms, **kwargs):
+        """
+        Valida el formulario de registro del perfil de usuario
+        @return: Dirige con un mensaje de exito a el home
+        """
+        self.record_id = self.kwargs.get('pk', None)
+        objeto = get_object_or_404(User, pk=self.record_id)
+        if self.record_id is not None:
+            messages.success(self.request, "Usuario %s Actualizado con exito\
+                                           " % (str(objeto.username)))
+        return super(UpdatePerfilAdmin, self).forms_valid(forms)
 
 
 class DataDetailAdminView(LoginRequeridoPerAuth, ListView):
@@ -494,7 +515,7 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
     model = UserProfileVocero
     form_classes = {
       'user': FormularioUpdate,
-      'user_perfil': FormularioAdminRegPerfil,
+      'user_perfil': FormularioRegVoceros,
     }
     template_name = 'users.update.perfil.html'
     success_url = reverse_lazy('users:options')
@@ -508,7 +529,7 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
 
     def get_context_data(self, **kwargs):
         """
-        Carga el formulario en la vista,para registrar usuarios
+        Carga el formulario en la vista, para registrar usuarios
         @return: El contexto con los objectos para la vista
         """
         context = super(UpdatePerfil, self).get_context_data(**kwargs)
@@ -531,7 +552,7 @@ class UpdatePerfil(LoginRequeridoPerAuth, MultiModelFormView):
         except User.DoesNotExist:
             record = None
         return {
-          'user_perfil': record,
+          'user_perfil': record.fk_vocero,
           'user': record.fk_user if record else None}
 
     def forms_valid(self, forms, **kwargs):

@@ -597,6 +597,18 @@ def index(request):
 \subsection{Configurar estáticos}
 \begin{frame}[fragile]
 \begin{verbatim}
+Descargar plantillas prediseñadas, por ejemplo:
+
+https://adminlte.io/
+
+Copiar los directorios ccs y js en los en la carpeta static
+
+Copiar los archivo *.html en la carpeta templates
+
+Editar index.html y cambiar los enlaces a cada archivo en:
+
+<link rel="stylesheet" 
+href="{% static 'css/DataTables/jquery.dataTables.min.css' %}">
 
 \end{verbatim}
 \end{frame}
@@ -604,14 +616,99 @@ def index(request):
 \subsection{Listar Registros}
 \begin{frame}[fragile]
 \begin{verbatim}
+Creamos el archivo ajax.py
 
+# -*- encoding: utf-8 -*-
+from django.conf import settings
+from django_datatables_view.base_datatable_view import (
+   BaseDatatableView)
+   
+from django.contrib.auth.models import (
+    User)
+
+class ListUsersAjaxView(BaseDatatableView):
+    model = User
+    columns = ['pk','first_name','last_name','username','email',
+               'date_joined', 'last_joined' ]
+    order_columns = ['pk', 'username']
+    max_display_length = 500
+    
+    def __init__(self):
+        super(ListUsersAjaxView, self).__init__()
+
+    def get_initial_queryset(self):
+        return self.model.objects.all()
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+def prepare_results(self, qs):
+  json_data = []
+  for item in qs:
+    json_data.append([
+      username,
+     "{0} {1}".format(str(item.first_name),str(item.last_name)),
+      item.email,
+      item.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
+      last_login                
+    ])
+            
+  return json_data
+# Fin del archivo ajax.py
+
+#En el archivo urls.py anexar las siguientes lineas
+from .ajax import *
+
+urlpatterns = [
+    ....
+url(r'^listar-users/$', ListUsersAjaxView.as_view(),
+        name="listar_users"),
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+Se anexa el siguiente código el archivo index.html
+En la parte visual:
+
+<div id="datatable"></div>
+
+Y en la parte de código javascript
+
+<script type="text/javascript">
+$(document).ready(function() {
+   $('#datatable').dataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {% url 'listar_user'%},
+        language: {url: JSON_DATA}
+        });
+    $('#datatable')
+        .removeClass('display')
+        .addClass('table table-striped table-bordered');
+});
+</script>
 \end{verbatim}
 \end{frame}
 
 \subsection{Anexar registros}
 \begin{frame}[fragile]
 \begin{verbatim}
+Creamos el método en el archivo views.py
 
+def AnexarRegistro(request):
+    if request.method == 'POST':
+        
+        vusername = request.POST['username']
+        u = User(username = vusername)
+        u.save()
+        message = _("El usuario fue creado")
+        template = loader.get_template('personal/profile.html')
+    context = {'message':message}
+    return HttpResponse(template.render(context, request))
+       
 \end{verbatim}
 \end{frame}
 

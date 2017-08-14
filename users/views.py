@@ -458,18 +458,26 @@ class ModalsPerfil(LoginRequeridoPerAuth, MultiModelFormView):
     group_required = [u"Administradores"]
     record_id = None
 
-
     def get_context_data(self, **kwargs):
         """
-        Carga el formulario en la vista,para registrar usuarios
+        Carga el formulario en la vista, para registrar usuarios
         @return: El contexto con los objectos para la vista
         """
         context = super(ModalsPerfil, self).get_context_data(**kwargs)
         self.record_id = self.kwargs.get('pk', None)
-        try:
-            record = self.model.objects.select_related().get(fk_user=self.record_id)
-        except User.DoesNotExist:
-            record = None
+        if self.record_id is not None:
+            try:
+                usuario = User.objects.get(pk=self.record_id)
+            except User.DoesNotExist:
+                usuario = None
+            try:
+                record = self.model.objects.select_related().get(fk_user=self.record_id)
+            except self.model.DoesNotExist:
+                if usuario is not None:
+                    try:
+                        record = UserProfileVocero.objects.select_related().get(fk_user=self.record_id)
+                    except:
+                        record = None
         context['upUser'] = record
         return context
 
@@ -479,13 +487,26 @@ class ModalsPerfil(LoginRequeridoPerAuth, MultiModelFormView):
         @return: El contexto con los objectos para la vista
         """
         self.record_id = self.kwargs.get('pk', None)
-        try:
-            record = self.model.objects.select_related().get(fk_user=self.record_id)
-        except User.DoesNotExist:
-            record = None
+        if self.record_id is not None:
+            try:
+                usuario = User.objects.get(pk=self.record_id)
+            except User.DoesNotExist:
+                usuario = None
+            try:
+                record = self.model.objects.select_related().get(fk_user=self.record_id)
+                vocero = None
+                self.form_classes['user_perfil'] = FormularioAdminRegPerfil
+            except self.model.DoesNotExist:
+                if usuario is not None:
+                    try:
+                        vocero = UserProfileVocero.objects.select_related().get(fk_user=self.record_id)
+                        self.form_classes['user_perfil'] = FormupdatePerfilVoceros
+                    except UserProfileVocero.DoesNotExist:
+                        vocero = None
+                record = None
         return {
-          'user_perfil': record,
-          'user': record.fk_user if record else None}
+          'user_perfil': vocero.fk_vocero if vocero else record,
+          'user': record.fk_user if record else vocero.fk_user }
 
     def get_success_url(self):
         return reverse('users:lista_users')

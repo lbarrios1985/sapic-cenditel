@@ -4,6 +4,10 @@ input[type="checkbox"][id^="user"] {
   display: none;
 }
 
+input[type="checkbox"][id^="org-"] {
+  display: none;
+}
+
 label {
   border: 1px solid #fff;
   padding: 10px;

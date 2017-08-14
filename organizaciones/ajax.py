@@ -60,7 +60,7 @@ class ListOrgsAjaxView(LoginRequeridoPerAuth, BaseDatatableView):
                     onclick='modal_org(%s)'>%s</a>\
                     " % (str(item.pk), str(item.fk_tipo_organizacion.tipo))
             if item.fecha_conformacion:
-                fecha_conformacion = item.fecha_conformacion.strftime("%Y-%m-%d %H:%M:%S")
+                fecha_conformacion = item.fecha_conformacion.strftime("%Y-%m-%d")
             else:
                 fecha_conformacion = "No ha ingresado"
             if item.activa:

@@ -9,7 +9,7 @@ from .utils import obtenerOrganizaciones
 urlpatterns = [
     url(r'^registrar-organizacion/$', RegisterOrgView.as_view(),
         name="registrar_organizacion"),
-    url(r'^listar-organizacion/$', ListOrgView,
+    url(r'^listar-organizacion/$', ListOrgView.as_view(),
         name="listar_organizacion"),
 
     # Ajax list Organizaciones, for Administradores

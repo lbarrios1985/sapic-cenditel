@@ -24,6 +24,9 @@ from django.shortcuts import (
     render, redirect, get_object_or_404
 )
 from django.views.generic.base import RedirectView
+from django.views.generic import (
+    TemplateView
+)
 from django.views.generic.edit import (
     FormView, UpdateView
 )
@@ -88,5 +91,54 @@ class RegisterOrgView(LoginRequeridoPerAuth, MultiModelFormView):
         return super(RegisterOrgView, self).forms_invalid(forms)
 
 
-def ListOrgView(request):
-    return render(request, 'organizaciones.list.html')
+class ListOrgView(LoginRequeridoPerAuth, TemplateView):
+    """!
+    Listar usuarios de la plataforma
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 30-05-2017
+    @version 1.0.0
+    """
+    template_name = "organizaciones.list.html"
+    model = OrganizacionSocial
+    success_url = reverse_lazy('organizaciones:listar_organizacion')
+    group_required = [u"Administradores"]
+
+    def __init__(self):
+        super(ListOrgView, self).__init__()
+
+    def post(self, *args, **kwargs):
+        '''
+        Cambia el estado activo a el usuario
+        @return: Dirige a la tabla que muestra los usuarios de la apliacion
+        '''
+        accion = self.request.POST
+        activar = accion.get('activar', None)
+        inactivar = accion.get('inactivar', None)
+        estado = False
+
+        if activar is not None:
+            org = activar
+            estado = True
+        elif inactivar is not None:
+            org = inactivar
+            estado = False
+        else:
+            messages.error(self.request, "Esta intentando hacer \
+                                          una accion incorrecta")
+        try:
+            org_act = self.model.objects.get(pk=org)
+            org_act.activa = estado
+            org_act.save()
+            if estado:
+                messages.success(self.request, "Se ha activado \
+                                                la organizacion: %s\
+                                                " % (str(org_act)))
+            else:
+                messages.warning(self.request, "Se ha inactivado \
+                                                la organizacion: %s\
+                                                " % (str(org_act)))
+        except:
+            messages.info(self.request, "La organizacion social no existe")
+        return redirect(self.success_url)

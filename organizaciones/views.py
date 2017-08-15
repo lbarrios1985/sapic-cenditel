@@ -103,7 +103,7 @@ class ListOrgView(LoginRequeridoPerAuth, TemplateView):
     template_name = "organizaciones.list.html"
     model = OrganizacionSocial
     success_url = reverse_lazy('organizaciones:listar_organizacion')
-    group_required = [u"Administradores"]
+    group_required = [u"Administradores", u"Voceros"]
 
     def __init__(self):
         super(ListOrgView, self).__init__()

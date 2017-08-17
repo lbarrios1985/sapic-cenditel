@@ -454,3 +454,40 @@ class FormularioRegVoceros(ModelForm):
                                    documento_identidad=documento_identidad)
             except:
                 self.add_error('documento_identidad', msg)
+
+
+class FormupdatePerfilVoceros(ModelForm):
+
+    tipo_organizacion = forms.ModelChoiceField(queryset=TipoOrganizacion.objects.all())
+
+    class Meta:
+        model = Vocero
+        fields = ['fk_org_social', 'fk_tipo_documento', 'documento_identidad',
+                  'tipo_organizacion', 'fk_rol_unidad', 'tipo_organizacion']
+
+    def __init__(self, *args, **kwargs):
+        super(FormupdatePerfilVoceros, self).__init__(*args, **kwargs)
+        self.fields['fk_tipo_documento'].widget.attrs.update({'class':'form-control',
+                                                              'readonly':'readonly'})
+        self.fields['fk_tipo_documento'].empty_label = 'Seleccione El tipo de Documento'
+        self.fields['fk_tipo_documento'].label = 'Tipo de Documento'
+        self.fields['fk_tipo_documento'].required = True
+
+        self.fields['documento_identidad'].widget.attrs.update({'class':'form-control',
+                                                      'readonly':'readonly'})
+        self.fields['documento_identidad'].label = 'Documento de Identidad'
+        self.fields['documento_identidad'].required=True
+
+        self.fields['tipo_organizacion'].widget.attrs.update({'class':'form-control'})
+        self.fields['tipo_organizacion'].empty_label = 'Seleccione Tipo Organizacion social'
+        self.fields['tipo_organizacion'].required = True
+
+        self.fields['fk_org_social'].widget.attrs.update({'class':'form-control'})
+        self.fields['fk_org_social'].empty_label = 'Seleccione la Organizacion social'
+        self.fields['fk_org_social'].label = 'Organizacion social'
+        self.fields['fk_org_social'].required = True
+
+        self.fields['fk_rol_unidad'].widget.attrs.update({'class':'form-control'})
+        self.fields['fk_rol_unidad'].empty_label = 'Seleccione el Rol'
+        self.fields['fk_rol_unidad'].label = 'Rol del Vocero'
+        self.fields['fk_rol_unidad'].required = True

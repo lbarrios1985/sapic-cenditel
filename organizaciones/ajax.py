@@ -4,6 +4,9 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from organizaciones.models import (
     OrganizacionSocial
     )
+from users.models import (
+    UserProfileVocero
+    )
 from utils.views import (
     LoginRequeridoPerAuth
 )
@@ -30,7 +33,7 @@ class ListOrgsAjaxView(LoginRequeridoPerAuth, BaseDatatableView):
     # set max limit of records returned, this is used to protect our site if someone tries to attack our site
     # and make it return huge amount of data
     max_display_length = 500
-    group_required = [u"Administradores"]
+    group_required = [u"Administradores", u"Voceros"]
 
     def __init__(self):
         super(ListOrgsAjaxView, self).__init__()
@@ -45,7 +48,25 @@ class ListOrgsAjaxView(LoginRequeridoPerAuth, BaseDatatableView):
         # these are simply objects displayed in datatable
         # You should not filter data returned here by any filter values entered by user. This is because
         # we need some base queryset to count total number of records.
-        return self.model.objects.all()
+        user = self.request.user
+        try:
+            grupos = user.groups.all()
+            grupo = []
+            if len(grupos) > 1:
+                for g in grupos:
+                    grupo += str(g),
+            else:
+                grupo = str(user.groups.get())
+        except:
+            grupo = "No pertenece a un grupo"
+        if "Administradores" in grupo:
+            return self.model.objects.all()
+        elif "Voceros" in grupo:
+            try:
+                usuario_vocero = UserProfileVocero.objects.select_related().get(fk_user=user)
+            except UserProfileVocero.DoesNotExist:
+                usuario_vocero = None
+            return self.model.objects.select_related().filter(vocero__documento_identidad=usuario_vocero.fk_vocero.documento_identidad)
 
     def prepare_results(self, qs):
         """!
@@ -60,7 +81,7 @@ class ListOrgsAjaxView(LoginRequeridoPerAuth, BaseDatatableView):
                     onclick='modal_org(%s)'>%s</a>\
                     " % (str(item.pk), str(item.fk_tipo_organizacion.tipo))
             if item.fecha_conformacion:
-                fecha_conformacion = item.fecha_conformacion.strftime("%Y-%m-%d %H:%M:%S")
+                fecha_conformacion = item.fecha_conformacion.strftime("%Y-%m-%d")
             else:
                 fecha_conformacion = "No ha ingresado"
             if item.activa:
@@ -86,7 +107,7 @@ class ListOrgsAjaxView(LoginRequeridoPerAuth, BaseDatatableView):
                 item.codigo,
                 item.rif,
                 item.situr,
-                item.nombre,
+                item.nombre.title(),
                 item.email,
                 fecha_conformacion,
                 item.sector,

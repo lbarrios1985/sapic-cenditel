@@ -6,8 +6,6 @@
         // Objeto Json lista de usuarios
         var LISTAR_ORG = "{% url 'organizaciones:listar_orgs' %}"
         var user = "{{ request.user.pk }}"
-        //ruta = '{% url 'users:modal_perfil' request.user.pk %}';
-        //id_user = {{request.user.pk}};
     </script>
 {% endblock extra_constantes %}
 {% block extracss %}
@@ -30,7 +28,7 @@
                     <section class="content-header">
                       <h2>
                         Lista de Organziaciones
-                        <small>Muestra los datos de todos las Organizaciones Sociales Registradas</small>
+                        <small>Muestra los datos de todas las Organizaciones Sociales Registradas</small>
                       </h2>
                     </section>
                     <section class="content">

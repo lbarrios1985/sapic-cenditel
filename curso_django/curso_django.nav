@@ -95,20 +95,22 @@
 \headcommand {\beamer@subsectionentry {0}{2}{15}{36}{Crear Login}}\headcommand {\beamer@subsectionpages {35}{35}}
 \headcommand {\slideentry {2}{15}{1}{36/36}{Crear Login}{0}}
 \headcommand {\beamer@framepages {36}{36}}
-\headcommand {\beamer@subsectionentry {0}{2}{16}{37}{Registro de Usuarios}}\headcommand {\beamer@subsectionpages {36}{36}}
-\headcommand {\slideentry {2}{16}{1}{37/37}{Registro de Usuarios}{0}}
+\headcommand {\slideentry {2}{15}{2}{37/37}{Crear Login}{0}}
 \headcommand {\beamer@framepages {37}{37}}
-\headcommand {\beamer@subsectionentry {0}{2}{17}{38}{Login required}}\headcommand {\beamer@subsectionpages {37}{37}}
-\headcommand {\slideentry {2}{17}{1}{38/38}{Login required}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{16}{38}{Registro de Usuarios}}\headcommand {\beamer@subsectionpages {36}{37}}
+\headcommand {\slideentry {2}{16}{1}{38/38}{Registro de Usuarios}{0}}
 \headcommand {\beamer@framepages {38}{38}}
-\headcommand {\beamer@subsectionentry {0}{2}{18}{39}{Recuperar contrase\IeC {\~n}a por correo}}\headcommand {\beamer@subsectionpages {38}{38}}
-\headcommand {\slideentry {2}{18}{1}{39/39}{Recuperar contrase\IeC {\~n}a por correo}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{17}{39}{Login required}}\headcommand {\beamer@subsectionpages {38}{38}}
+\headcommand {\slideentry {2}{17}{1}{39/39}{Login required}{0}}
 \headcommand {\beamer@framepages {39}{39}}
-\headcommand {\beamer@subsectionentry {0}{2}{19}{40}{Conceptos avanzados}}\headcommand {\beamer@subsectionpages {39}{39}}
-\headcommand {\slideentry {2}{19}{1}{40/40}{Conceptos avanzados}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{18}{40}{Recuperar contrase\IeC {\~n}a por correo}}\headcommand {\beamer@subsectionpages {39}{39}}
+\headcommand {\slideentry {2}{18}{1}{40/40}{Recuperar contrase\IeC {\~n}a por correo}{0}}
 \headcommand {\beamer@framepages {40}{40}}
-\headcommand {\beamer@partpages {1}{40}}
-\headcommand {\beamer@subsectionpages {40}{40}}
-\headcommand {\beamer@sectionpages {6}{40}}
-\headcommand {\beamer@documentpages {40}}
-\headcommand {\def \inserttotalframenumber {40}}
+\headcommand {\beamer@subsectionentry {0}{2}{19}{41}{Conceptos avanzados}}\headcommand {\beamer@subsectionpages {40}{40}}
+\headcommand {\slideentry {2}{19}{1}{41/41}{Conceptos avanzados}{0}}
+\headcommand {\beamer@framepages {41}{41}}
+\headcommand {\beamer@partpages {1}{41}}
+\headcommand {\beamer@subsectionpages {41}{41}}
+\headcommand {\beamer@sectionpages {6}{41}}
+\headcommand {\beamer@documentpages {41}}
+\headcommand {\def \inserttotalframenumber {41}}

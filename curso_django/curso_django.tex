@@ -729,7 +729,54 @@ def AnexarRegistro(request):
 \subsection{Crear Login}
 \begin{frame}[fragile]
 \begin{verbatim}
+Creamos la aplicacion user desde la consola:
 
+python manage.py startapp user
+
+Editamos el archivo user/views.py:
+
+# -*- coding: utf-8 -*-
+
+from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import (
+    authenticate, logout, login
+)
+from django.contrib.auth.models import (
+    Group, Permission, User
+)
+
+class LoginView(FormView):
+    form_class = FormularioLogin
+    template_name = 'users.login.html'
+    success_url = '/inicio/'
+    
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+def form_valid(self, form):
+        
+    usuario = form.cleaned_data['usuario']
+    contrasena = form.cleaned_data['contrasena']
+    usuario = authenticate(username=usuario,password=contrasena)
+        
+    if usuario is not None:
+        login(self.request, usuario)
+        messages.info(self.request,'Bienvenido %s has ingresado\
+                                    Sistema con el usuario %s \
+                                    ' % (usuario.first_name,
+                                         usuario.username))
+    else:
+        self.success_url = reverse_lazy('users:login')
+        messages.warning(self.request,'Verifique su nombre y \
+                                       contraseña\
+                                      y vuelve a intertar')
+
+    return super(LoginView, self).form_valid(form)
+ 
 \end{verbatim}
 \end{frame}
 

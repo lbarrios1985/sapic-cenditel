@@ -18,9 +18,9 @@
 \beamer@subsectionintoc {2}{11}{Listar Registros}{30}{0}{2}
 \beamer@subsectionintoc {2}{12}{Anexar registros}{33}{0}{2}
 \beamer@subsectionintoc {2}{13}{Modificar y eliminar registros}{34}{0}{2}
-\beamer@subsectionintoc {2}{14}{View's}{35}{0}{2}
-\beamer@subsectionintoc {2}{15}{Crear Login}{36}{0}{2}
-\beamer@subsectionintoc {2}{16}{Registro de Usuarios}{38}{0}{2}
-\beamer@subsectionintoc {2}{17}{Login required}{39}{0}{2}
-\beamer@subsectionintoc {2}{18}{Recuperar contrase\IeC {\~n}a por correo}{40}{0}{2}
-\beamer@subsectionintoc {2}{19}{Conceptos avanzados}{41}{0}{2}
+\beamer@subsectionintoc {2}{14}{View's}{36}{0}{2}
+\beamer@subsectionintoc {2}{15}{Crear Login}{43}{0}{2}
+\beamer@subsectionintoc {2}{16}{Registro de Usuarios}{45}{0}{2}
+\beamer@subsectionintoc {2}{17}{Login required}{47}{0}{2}
+\beamer@subsectionintoc {2}{18}{Recuperar contrase\IeC {\~n}a por correo}{48}{0}{2}
+\beamer@subsectionintoc {2}{19}{Conceptos avanzados}{49}{0}{2}

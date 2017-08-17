@@ -638,7 +638,6 @@ class ListUsersAjaxView(BaseDatatableView):
 
     def get_initial_queryset(self):
         return self.model.objects.all()
-
 \end{verbatim}
 \end{frame}
 
@@ -715,13 +714,206 @@ def AnexarRegistro(request):
 \subsection{Modificar y eliminar registros}
 \begin{frame}[fragile]
 \begin{verbatim}
+@login_required
+def change_profile(request):
+    """ Cambiar perfil de usuario
+    """
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        personal = User.objects.get(user_id=request.user.id)               
+        personal.first_name = request.POST['fname']
+        personal.last_name = request.POST['lname']
+        personal.email = request.POST['email']
+        personal.is_active = request.POST.get('is_active')
+        personal.user.save()
+        
+        message = _("The profile change was made")
+	context = {'personal':personal,'message':message,}
+    template = loader.get_template('personal/profile.html')
+    return HttpResponse(template.render(context, request))
 
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+@login_required
+def delete_personal(request):
+    """ Delete users 
+    """
+    id = json.loads(request.POST['seleccionados'])
+    print id 
+ 
+    for id_values in id:
+        if id_values["id"] != "0":
+	           
+            u = User.objects.get(pk=int(id_values["id"]))
+            u.delete()   
+	   
+    return redirect('personal')
 \end{verbatim}
 \end{frame}
 
 \subsection{View's}
 \begin{frame}[fragile]
 \begin{verbatim}
+####  ListView
+
+# En el archivo views.py
+
+from django.views.generic.list import ListView
+from django.utils import timezone
+
+from articles.models import Article
+
+class ArticleListView(ListView):
+
+    model = Article
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleListView, 
+                        self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+
+# En el archivo urls.py
+from django.conf.urls import url
+
+from article.views import ArticleListView
+
+urlpatterns = [
+ url(r'^$',ArticleListView.as_view(),name='article-list'),
+]
+
+# El template
+<h1>Articles</h1>
+<ul>
+{% for article in object_list %}
+    <li>
+    {{ article.pub_date|date }} - {{ article.headline }}
+    </li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+#### DetailView
+
+# En el archivo views.py
+
+from django.views.generic.detail import DetailView
+from django.utils import timezone
+
+from articles.models import Article
+
+class ArticleDetailView(DetailView):
+
+    model = Article
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView, self).
+                  get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+        
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+
+# En el archivo urls.py
+
+from django.conf.urls import url
+
+from article.views import ArticleDetailView
+
+urlpatterns = [
+ url(r'^(?P<slug>[-\w]+)/$',ArticleDetailView.as_view(),
+                            name='article-detail'),
+]
+
+# El template
+
+<h1>{{ object.headline }}</h1>
+<p>{{ object.content }}</p>
+<p>Reporter: {{ object.reporter }}</p>
+<p>Published: {{ object.pub_date|date }}</p>
+<p>Date: {{ now|date }}</p>
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+#### CreateView
+
+from django.views.generic.edit import CreateView
+from myapp.models import Author
+
+class AuthorCreate(CreateView):
+    model = Author
+    fields = ['name']
+
+# En el template
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+#### UpdateView
+
+from django.views.generic.edit import UpdateView
+from myapp.models import Author
+
+class AuthorUpdate(UpdateView):
+    model = Author
+    fields = ['name']
+    template_name_suffix = '_update_form'
+    
+# En el template
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update" />
+</form>
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+#### DeleteView
+
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
+from myapp.models import Author
+
+class AuthorDelete(DeleteView):
+    model = Author
+    success_url = reverse_lazy('author-list')
+    
+# En el template
+
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input type="submit" value="Confirm" />
+</form>
 
 \end{verbatim}
 \end{frame}
@@ -750,8 +942,6 @@ class LoginView(FormView):
     form_class = FormularioLogin
     template_name = 'users.login.html'
     success_url = '/inicio/'
-    
-
 \end{verbatim}
 \end{frame}
 
@@ -783,6 +973,43 @@ def form_valid(self, form):
 \subsection{Registro de Usuarios}
 \begin{frame}[fragile]
 \begin{verbatim}
+#### Crear Permisos desde el shell ejecutar
+
+from myapp.models import BlogPost
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+content_type = ContentType.objects.get_for_model(BlogPost)
+permission = Permission.objects.create(
+    codename='can_publish',
+    name='Can Publish Posts',
+    content_type=content_type,
+)
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+
+from django.contrib.auth.models import Permission, User
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
+
+from myapp.models import BlogPost
+
+def user_gains_perms(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    # any permission check will 
+    #cache the current set of permissions
+    user.has_perm('myapp.change_blogpost')
+
+    content_type=ContentType.objects.get_for_model(BlogPost)
+    permission = Permission.objects.get(
+        codename='change_blogpost',
+        content_type=content_type,
+    )
+    user.user_permissions.add(permission)
 
 \end{verbatim}
 \end{frame}
@@ -791,21 +1018,79 @@ def form_valid(self, form):
 \begin{frame}[fragile]
 \begin{verbatim}
 
+from django.contrib.auth.decorators import 
+  login_required, permission_required
+from django.views.generic import TemplateView
+
+from .views import VoteView
+
+urlpatterns = [
+    url(r'^about/$', login_required(
+           TemplateView.as_view(template_name="secret.html"))),
+    url(r'^vote/$', permission_required(
+           'polls.can_vote')(VoteView.as_view())),
+]
+
 \end{verbatim}
 \end{frame}
 
 \subsection{Recuperar contraseña por correo}
 \begin{frame}[fragile]
 \begin{verbatim}
-
+def newpassword(request):
+    puser = request.POST['puser']
+    try:
+        user = User.objects.get(username=puser)
+        randompass = ''.join([choice(
+        '1234567890qwertyuiopasdfghjklzxcvbnm') 
+        for i in range(10)])
+        print randompass
+        subject = _('System: New Password')
+        message = _('Your password is reset, new password: ')
+                    + randompass
+        user.email_user("subject","message")
+        user.set_password(randompass)
+        user.save()
+    except:
+        print "error send mail"
+        mensaje = _("User not found")
+    return redirect('/authenticate/signin')
+ 
 \end{verbatim}
 \end{frame}
 
 \subsection{Conceptos avanzados}
 \begin{frame}[fragile]
 \begin{verbatim}
+Otros conceptos
+
+* Internacionalización
+* Zonas Horarias
+* Servidor Web
+* Geodjango
+* Django Rest
+
+ Entre otros...
 
 \end{verbatim}
 \end{frame}
+
+\begin{frame}[plain]
+
+  
+      \begin{center}
+
+        \font\endfont = cmss10 at 15.40mm
+        \color{Brown}
+        \endfont 
+        \baselineskip 20.0mm
+
+        CENDITEL
+
+      \end{center}    
+
+    
+\end{frame}
+
 
 \end{document}

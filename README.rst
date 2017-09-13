@@ -91,6 +91,9 @@ Para instalar la apliacacion en modo desarrollo debera seguir los siguientes pas
     Esto permitira cargar los datos iniciales del usuario admin de la aplicacion:
     (sapic)$ python manage.py loaddata fixtures/initial_data_users.json
 
+    Esto permitira cargar los datos iniciales de las preguntas de las consulta relacionadas a la explicacion situacional:
+    (sapic)$ python manage.py loaddata fixtures/initial_tipo_pregunta.json
+
 7-) Correr la aplicacion SAPIC
 
     Para correr la apliacion se debe  ejecutar el siguiente comando:

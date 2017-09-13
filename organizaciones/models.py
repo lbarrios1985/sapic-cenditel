@@ -52,7 +52,7 @@ class OrganizacionSocial(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion de las organizaciones sociales
+            Funcion que muestra la informacion de las organizaciones sociales
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -90,7 +90,7 @@ class MovimientoSocial(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre los Movimientos Sociales
+            Funcion que muestra la informacion sobre los Movimientos Sociales
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -128,7 +128,7 @@ class ComunaConsejoComunal(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre los Consejos Comunales asociados a las Comunas
+            Funcion que muestra la informacion sobre los Consejos Comunales asociados a las Comunas
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -166,7 +166,7 @@ class ComunaOrgSociproductiva(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre las Organizaciones Socioproductivas Relacionadas a las Comunas
+            Funcion que muestra la informacion sobre las Organizaciones Socioproductivas Relacionadas a las Comunas
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -204,7 +204,7 @@ class ComunaMovimientoSocial(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre los Movimientos Sociales Relacionados a las Comunas
+            Funcion que muestra la informacion sobre los Movimientos Sociales Relacionados a las Comunas
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -251,7 +251,7 @@ class Vocero(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre los Voceros
+            Funcion que muestra la informacion sobre los Voceros
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017
@@ -288,7 +288,7 @@ class VoceroComite(models.Model):
 
     def __str__(self):
         """!
-            Fucncion que muestra la informacion sobre los Voceros
+            Funcion que muestra la informacion sobre los Voceros
             @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
             @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
             @date 25-07-2017

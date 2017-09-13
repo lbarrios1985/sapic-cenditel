@@ -7,6 +7,8 @@ estudio_problemas/__pycache__
 estudio_problemas/migrations/
 explicacion_situacional/__pycache__
 explicacion_situacional/migrations/
+explicacion_situacional/models/migrations/
+explicacion_situacional/models/__pycache__
 plan_integral/__pycache__
 plan_integral/migrations/
 organizaciones/__pycache__

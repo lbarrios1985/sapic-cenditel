@@ -57,7 +57,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         """!
-        Fucncion que muestra el dato del perfil de usuario
+        Funcion que muestra el dato del perfil de usuario
 
         @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
         @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
@@ -96,7 +96,7 @@ class UserProfileVocero(models.Model):
 
     def __str__(self):
         """!
-        Fucncion que muestra el dato del perfil de usuario
+        Funcion que muestra el dato del perfil de usuario
 
         @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
         @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>

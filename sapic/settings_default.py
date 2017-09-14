@@ -63,12 +63,12 @@ ROOT_URLCONF = 'sapic.urls'
 
 UTILS_TEMPLATES = os.path.join(BASE_DIR, "utils/templates")
 USERS_TEMPLATES = os.path.join(BASE_DIR, "users/templates")
-
+EXSIT_TEMPLATES = os.path.join(BASE_DIR, "explicacion_situacional/templates")
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [UTILS_TEMPLATES, USERS_TEMPLATES],
+        'DIRS': [UTILS_TEMPLATES, USERS_TEMPLATES, EXSIT_TEMPLATES],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

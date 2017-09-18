@@ -61,7 +61,7 @@ class ExplicacionSituacional(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos de la explicacion situacional
         """
-        return self.fk_organizacion
+        return str(self.fk_organizacion)
 
 
 class ExplicSitConsulta(models.Model):

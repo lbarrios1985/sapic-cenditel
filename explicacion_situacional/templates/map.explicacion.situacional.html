@@ -1,6 +1,9 @@
 {% extends 'base.inicio.html' %}
+{% load staticfiles %}
 {% block titulo %}_-=SAPIC-Registrar Explicacion Situacional=-_{% endblock titulo %}
-{% block extrajs %}{{ form.media }}
+{% block extrajs %}
+<script type="text/javascript" src="{% static 'explicacion_situacional/explicacion_situacional_map.js' %}"></script>
+    {{ form.media }}
 {% endblock extrajs %}
 {% block contenido %}
 <div class="contenido-sapic">
@@ -17,17 +20,23 @@
                     <div class="col-md-12">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <form method="post">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-12">
                             {% csrf_token %}
                             {{ form.as_p }}
-                        <button type="submit" class="btn btn-danger btn-block btn-fla">Agregar Ubicacion</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                    <br>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-danger btn-block btn-fla">Agregar Ubicacion</button>
+                        </div>
+                    </div>
+                </form>
             </section>
         </div>
     </div>
 </div>
 {% endblock contenido  %}
+

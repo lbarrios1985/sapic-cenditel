@@ -4,5 +4,5 @@ from django.conf.urls import url
 from .views import *
 
 urlpatterns = [
-                url(r'^explicacion-situacional/', mapquestGeoAdmin.as_view(), name="explicacion_situacional"),
+                url(r'^explicacion-situacional/', RegisterExplSitView.as_view(), name="explicacion_situacional"),
               ]

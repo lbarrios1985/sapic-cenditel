@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Sistema de Consulta Pública
+SAPIC
 
 Copyleft (@) 2017 CENDITEL nodo Mérida - https://planificacion.cenditel.gob.ve/trac/wiki/WikiStart#a5.-SistemaAutomatizadodePlanificaciónIntegralComunalSAPIC
 """

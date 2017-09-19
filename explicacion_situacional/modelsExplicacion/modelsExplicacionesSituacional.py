@@ -29,14 +29,21 @@ class ExplicacionSituacional(models.Model):
     @date 13-09-2017
     @version 1.0.0
     """
+    def get_upload_to(self, filename):
+        return "organizaciones_sociales/%s/%s" % (self.fk_organizacion, filename)
+
     # Llave foranea de la organizacion
     fk_organizacion = models.ForeignKey(OrganizacionSocial)
 
     # Area del consejo comunal
     coordenadas = models.PolygonField()
 
+    # Archivo del mapa cartografico de la comunidad
+    map_cartografico = models.FileField(upload_to=get_upload_to)
+
     # Fecha en que fue realizada la explicacion situacional
     fecha = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         """!

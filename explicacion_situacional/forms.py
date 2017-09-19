@@ -62,3 +62,9 @@ class ExplicacionForms(forms.ModelForm):
                                     'map_height': 400, 'default_lat': 8,
                                     'default_lon': -66})
         self.fields['coordenadas'].required = True
+
+        self.fields['map_cartografico'].widget.attrs.update({'class':'form-control',
+                                                   'data-show-preview':'true',
+                                                   'accept':'image/svg'})
+        self.fields['map_cartografico'].label = 'Mapa cartografico'
+        self.fields['map_cartografico'].required = True

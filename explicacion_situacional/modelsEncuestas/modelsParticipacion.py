@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """
 SAPIC
 
@@ -12,7 +12,6 @@ Copyleft (@) 2017 CENDITEL nodo Mérida - Copyleft (@) 2017 CENDITEL nodo Mérid
 # (CENDITEL) nodo Mérida - Venezuela</a>
 # @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
 # @version 1.0
-from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from explicacion_situacional.modelsEncuestas.modelsConsultas import Opcion, Pregunta
 

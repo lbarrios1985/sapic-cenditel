@@ -18,13 +18,44 @@ from django.shortcuts import render
 from django.views.generic.edit import (
     FormView, UpdateView
 )
-# Create your views here.
+from django.views.generic import (
+    TemplateView, ListView
+)
+
 from django.contrib.gis.admin.options import OSMGeoAdmin
 
-from .forms import ExplicacionForms
+from explicacion_situacional.forms import ExplicacionForms
+
+from utils.views import LoginRequeridoPerAuth
 
 
-class RegisterExplSitView(FormView):
+class ExplicacionSituacionalView(LoginRequeridoPerAuth, TemplateView):
+    """!
+    Clase que muestra el templates de la caracterización física de la comunidad
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 30-005-2017
+    @version 1.0.0
+    """
+    template_name = "explicacion.situacional.html"
+    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+
+
+class CaracterizacionFisicaView(LoginRequeridoPerAuth, TemplateView):
+    """!
+    Clase que muestra el templates de la caracterización física de la comunidad
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 30-005-2017
+    @version 1.0.0
+    """
+    template_name = "caracterizacion.fisica.html"
+    group_required = [u"Administradores", u"Voceros", u"Integrantes"]
+
+
+class RegisterUbicMapView(FormView):
     """!
     Clase que controla el formulario en la vista de la explicacion situacional
 

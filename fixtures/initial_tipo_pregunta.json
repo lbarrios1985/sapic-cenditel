@@ -19,7 +19,7 @@
     },
     {
         "fields": {
-            "tipo": "Si/No (Justificar No)"
+            "tipo": "Si/No (Justificar Si/No)"
         },
         "model": "explicacion_situacional.TipoPregunta"
     },

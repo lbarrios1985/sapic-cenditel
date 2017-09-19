@@ -1,12 +1,11 @@
-{% extends 'base.inicio.html' %}
+{% extends 'explicacion.situacional.html' %}
 {% load staticfiles %}
 {% block titulo %}_-=SAPIC-Registrar Explicacion Situacional=-_{% endblock titulo %}
 {% block extrajs %}
 <script type="text/javascript" src="{% static 'explicacion_situacional/explicacion_situacional_map.js' %}"></script>
     {{ form.media }}
 {% endblock extrajs %}
-{% block contenido %}
-<div class="contenido-sapic">
+{% block contenido_principal %}
     <div class="col-xs-12">
         <div class="panel-sapic">
             <section class="content-header">
@@ -37,6 +36,5 @@
             </section>
         </div>
     </div>
-</div>
-{% endblock contenido  %}
+{% endblock contenido_principal %}
 

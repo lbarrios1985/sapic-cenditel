@@ -34,9 +34,6 @@ class RespuestaSino(models.Model):
     ## Respuesta
     respuesta = models.BooleanField()
 
-    ## Id del ente adscrito
-    ente_adscrito = models.IntegerField()
-
     ## Relación con el user
     user = models.ForeignKey(User)
 
@@ -51,9 +48,6 @@ class RespuestaOpciones(models.Model):
     """
     ## Relación con la opción de la respuesta
     opcion = models.ForeignKey(Opcion)
-
-    ## Id del ente adscrito
-    ente_adscrito = models.IntegerField()
 
     ## Relación con el user
     user = models.ForeignKey(User)
@@ -73,9 +67,6 @@ class RespuestaAbierta(models.Model):
 
     ## Relación con la pregunta
     pregunta = models.ForeignKey(Pregunta)
-
-    ## Id del ente adscrito
-    ente_adscrito = models.IntegerField()
 
     ## Si la pregunta es de justificación
     es_justificacion = models.BooleanField(default=False)

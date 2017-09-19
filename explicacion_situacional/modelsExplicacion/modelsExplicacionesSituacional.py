@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """
 SAPIC
 
@@ -12,7 +12,6 @@ Copyleft (@) 2017 CENDITEL nodo Mérida - https://planificacion.cenditel.gob.ve/
 # (CENDITEL) nodo Mérida - Venezuela</a>
 # @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
 # @version 1.0
-from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
 
@@ -103,4 +102,4 @@ class ExplicSitConsulta(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos de la asignacion de la consulta a una explicacion situacional
         """
-        return self.fk_consulta
+        return str(self.fk_consulta)

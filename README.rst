@@ -94,6 +94,18 @@ Para instalar la apliacacion en modo desarrollo debera seguir los siguientes pas
     Esto permitira cargar los datos iniciales de las preguntas de las consulta relacionadas a la explicacion situacional:
     (sapic)$ python manage.py loaddata fixtures/initial_tipo_pregunta.json
 
+    Esto permitira cargar los datos iniciales de las caracteristicas de las consulta relacionadas a la explicacion situacional:
+    (sapic)$ python manage.py loaddata fixtures/initial_data_caracterizacion.json
+
+    Esto permitira cargar los datos iniciales de las consultas relacionadas a la explicacion situacional:
+    (sapic)$ python manage.py loaddata fixtures/initial_data_consultas.json
+
+    Esto permitira cargar los datos iniciales de las preguntas relacionadas a las consultas de la explicacion situacional:
+    (sapic)$ python manage.py loaddata fixtures/initial_data_preguntas.json
+
+    Esto permitira cargar los datos iniciales de las opciones de seleccion simple o multiples relacionadas a las preguntas de las consultas:
+    (sapic)$ python manage.py loaddata fixtures/initial_data_opciones.json
+
 7-) Correr la aplicacion SAPIC
 
     Para correr la apliacion se debe  ejecutar el siguiente comando:

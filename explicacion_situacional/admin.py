@@ -5,6 +5,7 @@ from explicacion_situacional.modelsEncuestas.modelsParticipacion import *
 from explicacion_situacional.modelsExplicacion.modelsExplicacionesSituacional import *
 
 
+admin.site.register(Caracterizacion)
 admin.site.register(Consulta)
 admin.site.register(TipoPregunta)
 admin.site.register(Pregunta)

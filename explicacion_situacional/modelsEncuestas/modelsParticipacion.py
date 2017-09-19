@@ -16,7 +16,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from explicacion_situacional.modelsEncuestas.modelsConsultas import Opcion, Pregunta
 
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class RespuestaSino(models.Model):
@@ -73,3 +73,22 @@ class RespuestaAbierta(models.Model):
 
     ## Relación con el user
     user = models.ForeignKey(User)
+
+
+class RespuestaUbicacion(models.Model):
+    """!
+    Clase que gestiona las respuestas de la ubicación
+
+    @author Ing. Leonel Paolo Hernandez Macchiarulo (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 19-07-2017
+    @version 1.0.0
+    """
+    ## Relación con la pregunta
+    pregunta = models.ForeignKey(Pregunta)
+
+    ## Relación con el user
+    user = models.ForeignKey(User)
+
+    # Campo donde se almace la coordenadas del Sitio
+    coordenadas = models.PolygonField()

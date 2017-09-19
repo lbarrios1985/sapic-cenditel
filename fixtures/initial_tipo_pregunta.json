@@ -29,5 +29,10 @@
         },
         "model": "explicacion_situacional.TipoPregunta"
     }
-    
+    {
+        "fields": {
+            "tipo": "Idicar Ubicación"
+        },
+        "model": "explicacion_situacional.TipoPregunta"
+    }
 ]

@@ -1,6 +1,6 @@
 {% extends 'base.inicio.html' %}
 {% load staticfiles %}
-{% block titulo %}_-= 403 No tiene permisos =-_{% endblock titulo %}
+{% block titulo %}_-= ERROR 404= No se encuentra =-_{% endblock titulo %}
   <!-- Tell the browser to be responsive to screen width -->
   {% block extra_constantes %}
   {% endblock extra_constantes %}
@@ -32,7 +32,7 @@
 
           <p>
             No puedes acceder a la pagina que buscas.
-            Puedes <a href="{% url 'utils:inicio' %}">retornar a inicio</a> o solicita al administrador permisos de acceso.
+            Puedes <a href="{% url 'users:home' %}">retornar a inicio</a> o solicitar al administrador permisos de acceso.
           </p>
 
           <form class="search-form">
@@ -40,7 +40,7 @@
               <input type="text" name="search" class="form-control" placeholder="Search">
 
               <div class="input-group-btn">
-                <button type="submit" name="submit" class="btn btn-info btn-flat"><i class="glyphicon glyphicon-search"></i>
+                <button type="submit" name="submit" class="btn btn-info btn-flat"><i class="fa fa-search"></i>
                 </button>
               </div>
             </div>
@@ -54,6 +54,4 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  </div>
-</div>
 {% endblock contenido %}

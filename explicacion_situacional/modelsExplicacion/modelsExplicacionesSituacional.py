@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """
-Sistema de Consulta Pública
+SAPIC
 
 Copyleft (@) 2017 CENDITEL nodo Mérida - https://planificacion.cenditel.gob.ve/trac/wiki/WikiStart#a5.-SistemaAutomatizadodePlanificaciónIntegralComunalSAPIC
 """
@@ -12,7 +12,6 @@ Copyleft (@) 2017 CENDITEL nodo Mérida - https://planificacion.cenditel.gob.ve/
 # (CENDITEL) nodo Mérida - Venezuela</a>
 # @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
 # @version 1.0
-from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
 
@@ -30,14 +29,21 @@ class ExplicacionSituacional(models.Model):
     @date 13-09-2017
     @version 1.0.0
     """
+    def get_upload_to(self, filename):
+        return "organizaciones_sociales/%s/%s" % (self.fk_organizacion, filename)
+
     # Llave foranea de la organizacion
     fk_organizacion = models.ForeignKey(OrganizacionSocial)
 
     # Area del consejo comunal
     coordenadas = models.PolygonField()
 
+    # Archivo del mapa cartografico de la comunidad
+    map_cartografico = models.FileField(upload_to=get_upload_to)
+
     # Fecha en que fue realizada la explicacion situacional
     fecha = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         """!
@@ -61,7 +67,7 @@ class ExplicacionSituacional(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos de la explicacion situacional
         """
-        return self.fk_organizacion
+        return str(self.fk_organizacion)
 
 
 class ExplicSitConsulta(models.Model):
@@ -103,4 +109,4 @@ class ExplicSitConsulta(models.Model):
             @param self <b>{object}</b> Objeto que instancia la clase
             @return Devuelve los datos de la asignacion de la consulta a una explicacion situacional
         """
-        return self.fk_consulta
+        return str(self.fk_consulta)

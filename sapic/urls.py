@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^', include('utils.urls', namespace="utils")),
     url(r'^', include('users.urls', namespace="users")),
     url(r'^', include('organizaciones.urls', namespace="organizaciones")),
+    url(r'^', include('explicacion_situacional.urls', namespace="explicacion")),
 ]

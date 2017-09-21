@@ -4,7 +4,7 @@ SAPIC
 
 Copyleft (@) 2017 CENDITEL nodo Mérida - Copyleft (@) 2017 CENDITEL nodo Mérida - https://planificacion.cenditel.gob.ve/trac/wiki/WikiStart#a5.-SistemaAutomatizadodePlanificaciónIntegralComunalSAPIC
 """
-## @package explicacion_situacional.views
+## @package explicacion_situacional.views.caracterizacionFisicaViews
 #
 # Vistas correspondientes a la explicacion situacional
 # @author Ing. Leonel Paolo Hernandez Macchiarulo (lhernandez at cenditel.gob.ve)
@@ -13,6 +13,8 @@ Copyleft (@) 2017 CENDITEL nodo Mérida - Copyleft (@) 2017 CENDITEL nodo Mérid
 # @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
 # @version 1.0
 
+import time
+import datetime 
 from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic.edit import (
@@ -22,8 +24,12 @@ from django.views.generic import (
     TemplateView, ListView
 )
 
-from django.contrib.gis.admin.options import OSMGeoAdmin
-
+from explicacion_situacional.modelsEncuestas.modelsConsultas import (
+    Consulta
+    )
+from explicacion_situacional.modelsExplicacion.modelsExplicacionesSituacional import (
+    ExplicSitConsulta
+    )
 from explicacion_situacional.forms import ExplicacionForms
 
 from utils.views import LoginRequeridoPerAuth
@@ -73,7 +79,25 @@ class RegisterUbicMapView(FormView):
         Funcion que valida el formulario de registro de la explicacion situacional
         @return: Dirige con un mensaje de exito a el home
         """
-        form.save()
-        messages.success(self.request, "Explicacion situacional, \
-                                        registrada con exito")
-        return super(RegisterExplSitView, self).form_valid(form)
+        ahora = int(time.strftime("%Y"))
+        explicacion_anho = ExplicSitConsulta.objects.filter(fk_explicacion__fk_organizacion=form.cleaned_data['fk_organizacion'], 
+                                         fecha__gt=datetime.date(ahora, 1, 1), fecha__lt=datetime.date(ahora, 12, 31)).exists()
+        if explicacion_anho:
+            self.success_url = '/ubicacion-geografica/'
+            messages.error(self.request, "Error al agregar el mapa y la \
+                                          ubicación cartográfica de \
+                                          la organizacion social, ya se \
+                                          registro la informacion para \
+                                          de año")
+            return super(RegisterUbicMapView, self).form_valid(form)
+        else:
+            cartografia = form.save()
+            consultas = Consulta.objects.all()
+            for consulta in consultas:
+                exp_sit = ExplicSitConsulta()
+                exp_sit.fk_consulta = Consulta.objects.get(pk=consulta.pk)
+                exp_sit.fk_explicacion = cartografia
+                exp_sit.save()
+            messages.success(self.request, "Explicacion situacional, \
+                                            registrada con exito")
+            return super(RegisterUbicMapView, self).form_valid(form)

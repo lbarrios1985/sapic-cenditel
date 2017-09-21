@@ -238,5 +238,15 @@
       "activa": true,
       "user": 1
     }
+  },
+  {
+    "model": "explicacion_situacional.consulta",
+    "pk": 25,
+    "fields": {
+      "fk_caracterizacion": 1,
+      "nombre_consulta": "Condici\u00f3n de suelos, vientos, aguas, viviendas y servicios p\u00fablicos de mi comunidad",
+      "activa": true,
+      "user": 1
+    }
   }
 ]

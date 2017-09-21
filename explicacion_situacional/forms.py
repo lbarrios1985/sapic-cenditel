@@ -14,6 +14,9 @@ Copyleft (@) 2017 CENDITEL nodo Mérida - Copyleft (@) 2017 CENDITEL nodo Mérid
 # @version 1.0
 
 from django.contrib.gis import forms
+from django.forms.fields import (
+    CharField
+)
 
 from explicacion_situacional.modelsExplicacion.modelsExplicacionesSituacional import *
 
@@ -65,6 +68,47 @@ class ExplicacionForms(forms.ModelForm):
 
         self.fields['map_cartografico'].widget.attrs.update({'class':'form-control',
                                                    'data-show-preview':'true',
-                                                   'accept':'image/svg'})
+                                                   'accept':'image/*'})
         self.fields['map_cartografico'].label = 'Mapa cartografico'
         self.fields['map_cartografico'].required = True
+
+
+
+class UbicacionForms(forms.Form):
+    """!
+    Clase que permite crear el formulario para el tipo de preguntas que requieren ubicacion
+
+    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+    @date 20-09-2017
+    @version 1.0.0
+    """
+    ubicacion = CharField()
+
+    class Meta:
+        """!
+        Clase que construye los meta datos del formulario
+
+        @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+        @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+        @date 18-09-2017
+        @version 1.0.0
+        """
+        fields = ('ubicacion')
+
+    def __init__(self, *args, **kwargs):
+        """!
+        Funcion que muestra el init del formulario
+
+        @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
+        @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>GNU Public License versión 2 (GPLv2)</a>
+        @date 18-09-2017
+        """
+        super(UbicacionForms, self).__init__(*args, **kwargs)
+        
+        self.fields['ubicacion'].widget = forms.OSMWidget.template_name = 'openlayers-es.html'
+        self.fields['ubicacion'].widget = forms.OSMWidget(attrs={
+                                    'default_zoom': 5.2, 'map_width': 600,
+                                    'map_height': 400, 'default_lat': 8,
+                                    'default_lon': -66})
+        self.fields['ubicacion'].required = True

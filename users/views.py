@@ -57,8 +57,6 @@ from .models import (
     )
 
 
-
-
 class LoginView(FormView):
     """!
     Muestra el formulario de ingreso a la aplicación
@@ -130,6 +128,7 @@ class LoginView(FormView):
 
         return super(LoginView, self).form_valid(form)
 
+
 class PasswordChangeView(LoginRequeridoPerAuth, SuccessMessageMixin,
                          PasswordChangeView):
     """!
@@ -179,7 +178,6 @@ class OthersOptionsView(LoginRequeridoPerAuth, TemplateView):
     """
     template_name = "users.other.options.html"
     group_required = [u"Administradores", u"Voceros", u"Integrantes"]
-
 
 
 class RegisterView(LoginRequeridoPerAuth, MultiModelFormView):
@@ -233,7 +231,6 @@ class RegisterView(LoginRequeridoPerAuth, MultiModelFormView):
         messages.success(self.request, "Usuario %s creado con exito\
                                        " % (str(usuario)))
         return super(RegisterView, self).forms_valid(forms)
-
 
 
 class DataDetailView(LoginRequeridoPerAuth, ListView):

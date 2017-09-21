@@ -1690,5 +1690,59 @@
       "tipo_pregunta": 1,
       "consulta": 24
     }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 193,
+    "fields": {
+      "texto_pregunta": "Describir superficies aptas para el desarrollo agropecuario y/o de infraestructura",
+      "tipo_pregunta": 6,
+      "consulta": 25
+    }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 194,
+    "fields": {
+      "texto_pregunta": "Describir superficies de derrumbe, hundimientos y/o deslizamientos cercanos o donde se ubiquen infraestructuras (casas, edificios, etc.) de la comunidad.",
+      "tipo_pregunta": 6,
+      "consulta": 25
+    }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 195,
+    "fields": {
+      "texto_pregunta": "Describir incidentes con cuerpos de agua",
+      "tipo_pregunta": 5,
+      "consulta": 25
+    }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 196,
+    "fields": {
+      "texto_pregunta": "Describir situaciones referidas a malos servicios de agua potable y/o residual",
+      "tipo_pregunta": 5,
+      "consulta": 25
+    }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 197,
+    "fields": {
+      "texto_pregunta": "Indicar incidentes con los vientos en la comunidad",
+      "tipo_pregunta": 6,
+      "consulta": 25
+    }
+  },
+  {
+    "model": "explicacion_situacional.pregunta",
+    "pk": 198,
+    "fields": {
+      "texto_pregunta": "Describir los vientos que inciden en la comunidad e indicar los per\u00edodos de tiempo en que afectan a \u00e9sta",
+      "tipo_pregunta": 5,
+      "consulta": 18
+    }
   }
 ]

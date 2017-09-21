@@ -297,3 +297,7 @@ hr {
 .table-hover a{
   color: #4CAF50;
 }
+
+.carousel-indicators{
+  bottom: 4px;
+}

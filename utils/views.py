@@ -283,16 +283,3 @@ class StartView(LoginRequeridoPerAuth, TemplateView):
     """
     template_name = "base.inicio.html"
     group_required = [u"Administradores", u"Voceros", u"Integrantes"]
-
-
-class Forbidden(TemplateView):
-    """!
-    Dirige a la plantilla Forbidden 403
-
-    @author Ing. Leonel P. Hernandez M. (lhernandez at cenditel.gob.ve)
-    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
-    GNU Public License versión 2 (GPLv2)</a>
-    @date 09-01-2017
-    @version 1.0.0
-    """
-    template_name = "base.403.html"
